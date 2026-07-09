@@ -5,32 +5,30 @@ import { ExplanationPanel } from '../../../components/explanation/ExplanationPan
 import { PseudocodePanel } from '../../../components/explanation/PseudocodePanel';
 import { PlaybackControls } from '../../../components/layout/PlaybackControls';
 import { Legend } from '../../../components/visualization/Legend';
-import { speedToDelayMs, useAnimationController } from '../../../lib/animation/useAnimationController';
+import { speedToDelayMs } from '../../../lib/animation/useAnimationController';
+import { useStepSequence } from '../../../lib/animation/useStepSequence';
+import { parseNumberList } from '../../../lib/utils/arrays';
 import { finalHeapFromSteps, heapExtractMinSteps, heapifySteps, heapInsertSteps, heapPeekSteps } from '../algorithms/minHeap';
 import type { HeapStep } from '../heapTypes';
 
 const pseudocode = ['insert/extract/heapify operation', 'compare parent and child nodes', 'while heap property is violated', '  swap parent with smaller child', 'finish with a valid min-heap'];
 
+const INITIAL_ARRAY = [42, 15, 23, 8, 16, 4, 31];
+
 export function HeapVisualizer() {
-  const [heap, setHeap] = useState<number[]>(() => finalHeapFromSteps(heapifySteps([42, 15, 23, 8, 16, 4, 31])));
   const [value, setValue] = useState(12);
   const [rawArray, setRawArray] = useState('42, 15, 23, 8, 16, 4, 31');
   const [speed, setSpeed] = useState(52);
-  const [steps, setSteps] = useState<HeapStep[]>(() => heapifySteps([42, 15, 23, 8, 16, 4, 31]));
-  const controller = useAnimationController<HeapStep>(steps, speedToDelayMs(speed));
+  const { data: heap, steps, controller, run } = useStepSequence<HeapStep, number[]>({
+    initialData: finalHeapFromSteps(heapifySteps(INITIAL_ARRAY)),
+    initialSteps: heapifySteps(INITIAL_ARRAY),
+    deriveData: finalHeapFromSteps,
+    speedMs: speedToDelayMs(speed),
+  });
   const current = controller.currentStep ?? steps[0];
 
   const displayHeap = current.heap;
   const levels = useMemo(() => heapLevels(displayHeap), [displayHeap]);
-
-  function run(nextSteps: HeapStep[]) {
-    setSteps(nextSteps);
-    setHeap(finalHeapFromSteps(nextSteps));
-  }
-
-  function parseRawArray(): number[] {
-    return rawArray.split(',').map((item) => Number(item.trim())).filter((item) => Number.isFinite(item));
-  }
 
   return (
     <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem]">
@@ -53,14 +51,14 @@ export function HeapVisualizer() {
             <div className="flex flex-wrap items-end gap-2">
               <ControlButton variant="primary" onClick={() => run(heapInsertSteps(heap, value))}>Insert</ControlButton>
               <ControlButton onClick={() => run(heapExtractMinSteps(heap))}>Extract min</ControlButton>
-              <ControlButton onClick={() => setSteps(heapPeekSteps(heap))}>Peek</ControlButton>
+              <ControlButton onClick={() => run(heapPeekSteps(heap), { mutate: false })}>Peek</ControlButton>
             </div>
             <label className="grid gap-2 lg:col-span-2">
               <span className="control-label">Heapify from array</span>
               <input className="control-input" value={rawArray} onChange={(event) => setRawArray(event.target.value)} />
             </label>
             <div className="flex items-end">
-              <ControlButton className="w-full" onClick={() => run(heapifySteps(parseRawArray()))}>Heapify</ControlButton>
+              <ControlButton className="w-full" onClick={() => run(heapifySteps(parseNumberList(rawArray)))}>Heapify</ControlButton>
             </div>
           </div>
         </div>

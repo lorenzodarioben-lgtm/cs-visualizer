@@ -1,3 +1,5 @@
+import type { AlgorithmStep } from '../../lib/animation/step';
+
 export type TurnstileState = 'Locked' | 'Unlocked';
 export type TurnstileInput = 'coin' | 'push';
 
@@ -9,12 +11,9 @@ export type StateTransition = {
   changed: boolean;
 };
 
-export type StateMachineStep = {
-  id: string;
-  description: string;
+export type StateMachineStep = AlgorithmStep & {
   currentState: TurnstileState;
   input?: TurnstileInput | string;
   transition?: StateTransition;
   history: StateTransition[];
-  codeLine?: number;
 };

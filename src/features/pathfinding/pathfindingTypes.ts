@@ -1,3 +1,5 @@
+import type { AlgorithmStep } from '../../lib/animation/step';
+
 export type PathAlgorithm = 'bfs' | 'dijkstra' | 'astar';
 
 export type Coord = { row: number; col: number };
@@ -20,11 +22,8 @@ export type Grid = {
 
 export type PathAction = 'init' | 'visit' | 'frontier' | 'path' | 'done' | 'no-path';
 
-export type PathStep = {
-  id: string;
+export type PathStep = AlgorithmStep & {
   action: PathAction;
-  description: string;
-  codeLine?: number;
   /** Cell being expanded this step, as a "row-col" key. */
   current: string | null;
   /** Cells finalized (dequeued/closed). */

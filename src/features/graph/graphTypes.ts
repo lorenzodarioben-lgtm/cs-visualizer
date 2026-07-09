@@ -1,3 +1,5 @@
+import type { AlgorithmStep } from '../../lib/animation/step';
+
 export type TraversalMode = 'bfs' | 'dfs';
 
 export type GraphNode = {
@@ -19,11 +21,8 @@ export type GraphExample = {
   edges: GraphEdge[];
 };
 
-export type TraversalStep = {
-  id: string;
+export type TraversalStep = AlgorithmStep & {
   mode: TraversalMode;
-  description: string;
-  codeLine?: number;
   currentNode?: string;
   visited: string[];
   completed: string[];

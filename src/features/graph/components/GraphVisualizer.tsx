@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { ControlButton } from '../../../components/controls/ControlButton';
 import { SliderControl } from '../../../components/controls/SliderControl';
+import { SelectControl } from '../../../components/controls/SelectControl';
 import { ExplanationPanel } from '../../../components/explanation/ExplanationPanel';
 import { PseudocodePanel } from '../../../components/explanation/PseudocodePanel';
 import { Legend } from '../../../components/visualization/Legend';
@@ -39,33 +40,31 @@ export function GraphVisualizer() {
           </div>
 
           <div className="mt-5 grid gap-4 rounded-2xl surface-muted p-4 md:grid-cols-4">
-            <label className="grid gap-2">
-              <span className="control-label">Graph</span>
-              <select
-                className="control-input"
-                value={exampleId}
-                onChange={(event) => {
-                  const next = GRAPH_EXAMPLES.find((item) => item.id === event.target.value) ?? GRAPH_EXAMPLES[0];
-                  setExampleId(next.id);
-                  setStartNode(next.nodes[0].id);
-                }}
-              >
-                {GRAPH_EXAMPLES.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
-              </select>
-            </label>
-            <label className="grid gap-2">
-              <span className="control-label">Traversal</span>
-              <select className="control-input" value={mode} onChange={(event) => setMode(event.target.value as TraversalMode)}>
-                <option value="bfs">Breadth-First Search</option>
-                <option value="dfs">Depth-First Search</option>
-              </select>
-            </label>
-            <label className="grid gap-2">
-              <span className="control-label">Start node</span>
-              <select className="control-input" value={startNode} onChange={(event) => setStartNode(event.target.value)}>
-                {graph.nodes.map((node) => <option key={node.id} value={node.id}>{node.label}</option>)}
-              </select>
-            </label>
+            <SelectControl
+              label="Graph"
+              value={exampleId}
+              onChange={(id) => {
+                const next = GRAPH_EXAMPLES.find((item) => item.id === id) ?? GRAPH_EXAMPLES[0];
+                setExampleId(next.id);
+                setStartNode(next.nodes[0].id);
+              }}
+              options={GRAPH_EXAMPLES.map((item) => ({ value: item.id, label: item.label }))}
+            />
+            <SelectControl
+              label="Traversal"
+              value={mode}
+              onChange={setMode}
+              options={[
+                { value: 'bfs', label: 'Breadth-First Search' },
+                { value: 'dfs', label: 'Depth-First Search' },
+              ]}
+            />
+            <SelectControl
+              label="Start node"
+              value={startNode}
+              onChange={setStartNode}
+              options={graph.nodes.map((node) => ({ value: node.id, label: node.label }))}
+            />
             <SliderControl label="Speed" min={1} max={100} suffix="%" value={speed} onChange={setSpeed} />
           </div>
         </div>

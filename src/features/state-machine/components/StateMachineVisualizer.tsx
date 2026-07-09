@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ControlButton } from '../../../components/controls/ControlButton';
+import { SelectControl } from '../../../components/controls/SelectControl';
 import { ExplanationPanel } from '../../../components/explanation/ExplanationPanel';
 import { PseudocodePanel } from '../../../components/explanation/PseudocodePanel';
 import { generateStateMachineSteps, transitionTable } from '../algorithms/turnstileMachine';
@@ -32,13 +33,22 @@ export function StateMachineVisualizer() {
               <ControlButton variant="ghost" onClick={() => setInputs([])}>Reset history</ControlButton>
             </div>
           </div>
-          <div className="mt-5 flex flex-wrap items-center gap-3 rounded-2xl surface-muted p-4">
-            <span className="control-label">Initial state</span>
-            <select className="control-input" value={initialState} onChange={(event) => { setInitialState(event.target.value as TurnstileState); setInputs([]); }}>
-              <option value="Locked">Locked</option>
-              <option value="Unlocked">Unlocked</option>
-            </select>
-            <span className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-bold text-indigo-700">Current: {current.currentState}</span>
+          <div className="mt-5 flex flex-wrap items-end gap-3 rounded-2xl surface-muted p-4">
+            <SelectControl
+              label="Initial state"
+              value={initialState}
+              onChange={(state) => {
+                setInitialState(state);
+                setInputs([]);
+              }}
+              options={[
+                { value: 'Locked', label: 'Locked' },
+                { value: 'Unlocked', label: 'Unlocked' },
+              ]}
+            />
+            <span className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+              Current: {current.currentState}
+            </span>
           </div>
         </div>
 

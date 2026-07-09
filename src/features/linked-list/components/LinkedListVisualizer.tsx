@@ -4,7 +4,8 @@ import { SliderControl } from '../../../components/controls/SliderControl';
 import { ExplanationPanel } from '../../../components/explanation/ExplanationPanel';
 import { PseudocodePanel } from '../../../components/explanation/PseudocodePanel';
 import { PlaybackControls } from '../../../components/layout/PlaybackControls';
-import { speedToDelayMs, useAnimationController } from '../../../lib/animation/useAnimationController';
+import { speedToDelayMs } from '../../../lib/animation/useAnimationController';
+import { useStepSequence } from '../../../lib/animation/useStepSequence';
 import { deleteAtIndexSteps, deleteByValueSteps, finalListFromSteps, insertAtIndexSteps, insertHeadSteps, insertTailSteps, reverseSteps, searchSteps } from '../algorithms/linkedListOperations';
 import type { LinkedListOperation, LinkedListStep } from '../linkedListTypes';
 
@@ -18,19 +19,19 @@ const pseudocode: Record<LinkedListOperation, string[]> = {
   reverse: ['previous = null', 'current = head', 'next = current.next; current.next = previous', 'advance pointers', 'head = previous'],
 };
 
+const INITIAL_LIST = [10, 25, 30, 45];
+
 export function LinkedListVisualizer() {
-  const [list, setList] = useState([10, 25, 30, 45]);
   const [value, setValue] = useState(20);
   const [index, setIndex] = useState(2);
   const [speed, setSpeed] = useState(50);
-  const [steps, setSteps] = useState<LinkedListStep[]>(() => searchSteps([10, 25, 30, 45], 30));
-  const controller = useAnimationController<LinkedListStep>(steps, speedToDelayMs(speed));
+  const { data: list, steps, controller, run } = useStepSequence<LinkedListStep, number[]>({
+    initialData: INITIAL_LIST,
+    initialSteps: searchSteps(INITIAL_LIST, 30),
+    deriveData: finalListFromSteps,
+    speedMs: speedToDelayMs(speed),
+  });
   const current = controller.currentStep ?? steps[0];
-
-  function run(nextSteps: LinkedListStep[], mutate = true) {
-    setSteps(nextSteps);
-    if (mutate) setList(finalListFromSteps(nextSteps));
-  }
 
   return (
     <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem]">
@@ -59,7 +60,7 @@ export function LinkedListVisualizer() {
               <ControlButton onClick={() => run(insertAtIndexSteps(list, value, index))}>Insert at index</ControlButton>
               <ControlButton variant="danger" onClick={() => run(deleteByValueSteps(list, value))}>Delete value</ControlButton>
               <ControlButton variant="danger" onClick={() => run(deleteAtIndexSteps(list, index))}>Delete index</ControlButton>
-              <ControlButton onClick={() => run(searchSteps(list, value), false)}>Search</ControlButton>
+              <ControlButton onClick={() => run(searchSteps(list, value), { mutate: false })}>Search</ControlButton>
               <ControlButton onClick={() => run(reverseSteps(list))}>Reverse</ControlButton>
               <ControlButton variant="ghost" onClick={() => run(insertTailSteps([], value))}>Clear + add</ControlButton>
             </div>

@@ -1,10 +1,11 @@
 import { useMemo, useState } from 'react';
 import { SliderControl } from '../../../components/controls/SliderControl';
+import { SelectControl } from '../../../components/controls/SelectControl';
 import { ControlButton } from '../../../components/controls/ControlButton';
 import { ExplanationPanel } from '../../../components/explanation/ExplanationPanel';
 import { PseudocodePanel } from '../../../components/explanation/PseudocodePanel';
 import { Legend } from '../../../components/visualization/Legend';
-import { StatusBadge, type StatusTone } from '../../../components/visualization/StatusBadge';
+import { StatusBadge, type StatusMap } from '../../../components/visualization/StatusBadge';
 import { PlaybackControls } from '../../../components/layout/PlaybackControls';
 import { speedToDelayMs, useAnimationController } from '../../../lib/animation/useAnimationController';
 import { useReducedMotion } from '../../../lib/animation/useReducedMotion';
@@ -15,7 +16,7 @@ import type { SortAlgorithm, SortStep } from '../sortingTypes';
 
 const algorithms: SortAlgorithm[] = ['bubble', 'selection', 'insertion', 'merge', 'quick'];
 
-const ACTION_STATUS: Record<SortStep['action'], { tone: StatusTone; label: string }> = {
+const ACTION_STATUS: StatusMap<SortStep['action']> = {
   initial: { tone: 'neutral', label: 'Ready' },
   compare: { tone: 'compare', label: 'Comparing' },
   swap: { tone: 'swap', label: 'Swapping' },
@@ -71,18 +72,12 @@ export function SortingVisualizer() {
           </div>
 
           <div className="mt-5 grid gap-4 rounded-2xl surface-muted p-4 lg:grid-cols-4">
-            <label className="grid gap-2">
-              <span className="control-label">Algorithm</span>
-              <select
-                className="control-input"
-                value={algorithm}
-                onChange={(event) => setAlgorithm(event.target.value as SortAlgorithm)}
-              >
-                {algorithms.map((item) => (
-                  <option key={item} value={item}>{SORT_INFO[item].label}</option>
-                ))}
-              </select>
-            </label>
+            <SelectControl
+              label="Algorithm"
+              value={algorithm}
+              onChange={setAlgorithm}
+              options={algorithms.map((item) => ({ value: item, label: SORT_INFO[item].label }))}
+            />
             <SliderControl
               label="Array size"
               min={4}

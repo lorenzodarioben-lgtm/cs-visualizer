@@ -2,6 +2,11 @@ import { useReducedMotion } from '../../lib/animation/useReducedMotion';
 
 export type StatusTone = 'neutral' | 'compare' | 'swap' | 'pivot' | 'active' | 'visit' | 'done';
 
+export type StatusDescriptor = { tone: StatusTone; label: string };
+
+/** Maps each action of an algorithm to its badge tone and label. */
+export type StatusMap<Action extends string> = Record<Action, StatusDescriptor>;
+
 const tones: Record<StatusTone, { dot: string; box: string }> = {
   neutral: {
     dot: 'bg-slate-400',

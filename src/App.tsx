@@ -7,27 +7,10 @@ import { HeapVisualizer } from './features/heap/components/HeapVisualizer';
 import { LinkedListVisualizer } from './features/linked-list/components/LinkedListVisualizer';
 import { StateMachineVisualizer } from './features/state-machine/components/StateMachineVisualizer';
 import { PathfindingVisualizer } from './features/pathfinding/components/PathfindingVisualizer';
+import { isVisualizerKey } from './features/visualizers';
+import type { VisualizerKey } from './features/visualizers';
 
-export type VisualizerKey =
-  | 'sorting'
-  | 'graph'
-  | 'pathfinding'
-  | 'heap'
-  | 'linked-list'
-  | 'state-machine';
-
-const VISUALIZER_KEYS: VisualizerKey[] = [
-  'sorting',
-  'graph',
-  'pathfinding',
-  'heap',
-  'linked-list',
-  'state-machine',
-];
-
-function isVisualizerKey(value: unknown): value is VisualizerKey {
-  return typeof value === 'string' && (VISUALIZER_KEYS as string[]).includes(value);
-}
+export type { VisualizerKey } from './features/visualizers';
 
 export default function App() {
   const [active, setActive] = useLocalStorage<VisualizerKey>(

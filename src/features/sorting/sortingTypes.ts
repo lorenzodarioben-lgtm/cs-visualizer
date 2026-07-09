@@ -1,3 +1,5 @@
+import type { AlgorithmStep } from '../../lib/animation/step';
+
 export type SortAlgorithm = 'bubble' | 'selection' | 'insertion' | 'merge' | 'quick';
 
 export type SortAction =
@@ -18,12 +20,9 @@ export type SortHighlights = {
   activeRange?: [number, number];
 };
 
-export type SortStep = {
-  id: string;
+export type SortStep = AlgorithmStep & {
   algorithm: SortAlgorithm;
   action: SortAction;
-  description: string;
-  codeLine?: number;
   array: number[];
   highlights: SortHighlights;
 };

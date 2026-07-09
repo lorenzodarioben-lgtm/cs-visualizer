@@ -1,11 +1,13 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ControlButton } from '../../../components/controls/ControlButton';
 import { SliderControl } from '../../../components/controls/SliderControl';
+import { SelectControl } from '../../../components/controls/SelectControl';
+import { SegmentedControl } from '../../../components/controls/SegmentedControl';
 import { ExplanationPanel } from '../../../components/explanation/ExplanationPanel';
 import { PseudocodePanel } from '../../../components/explanation/PseudocodePanel';
 import { PlaybackControls } from '../../../components/layout/PlaybackControls';
 import { Legend } from '../../../components/visualization/Legend';
-import { StatusBadge, type StatusTone } from '../../../components/visualization/StatusBadge';
+import { StatusBadge, type StatusMap } from '../../../components/visualization/StatusBadge';
 import { speedToDelayMs, useAnimationController } from '../../../lib/animation/useAnimationController';
 import { cloneGrid, createGrid, HEAVY_WEIGHT, isSameCoord, randomObstacles } from '../algorithms/grid';
 import { generatePathSteps } from '../algorithms/pathfinding';
@@ -20,7 +22,7 @@ type Brush = 'wall' | 'weight' | 'erase';
 
 const algorithms: PathAlgorithm[] = ['bfs', 'dijkstra', 'astar'];
 
-const ACTION_STATUS: Record<PathStep['action'], { tone: StatusTone; label: string }> = {
+const ACTION_STATUS: StatusMap<PathStep['action']> = {
   init: { tone: 'neutral', label: 'Ready' },
   visit: { tone: 'visit', label: 'Expanding' },
   frontier: { tone: 'active', label: 'Discovering' },
@@ -95,40 +97,22 @@ export function PathfindingVisualizer() {
           </div>
 
           <div className="mt-5 grid gap-4 rounded-2xl surface-muted p-4 lg:grid-cols-4">
-            <label className="grid gap-2">
-              <span className="control-label">Algorithm</span>
-              <select
-                className="control-input"
-                value={algorithm}
-                onChange={(event) => setAlgorithm(event.target.value as PathAlgorithm)}
-              >
-                {algorithms.map((item) => (
-                  <option key={item} value={item}>
-                    {PATH_INFO[item].label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <div className="grid gap-2">
-              <span className="control-label">Brush</span>
-              <div className="flex gap-1 rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-800">
-                {(['wall', 'weight', 'erase'] as Brush[]).map((item) => (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => setBrush(item)}
-                    aria-pressed={brush === item}
-                    className={`focus-ring flex-1 rounded-lg px-2 py-1.5 text-xs font-bold capitalize transition ${
-                      brush === item
-                        ? 'bg-indigo-600 text-white'
-                        : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700'
-                    }`}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            </div>
+            <SelectControl
+              label="Algorithm"
+              value={algorithm}
+              onChange={setAlgorithm}
+              options={algorithms.map((item) => ({ value: item, label: PATH_INFO[item].label }))}
+            />
+            <SegmentedControl
+              label="Brush"
+              value={brush}
+              onChange={setBrush}
+              options={[
+                { value: 'wall', label: 'Wall' },
+                { value: 'weight', label: 'Weight' },
+                { value: 'erase', label: 'Erase' },
+              ]}
+            />
             <SliderControl label="Speed" min={1} max={100} suffix="%" value={speed} onChange={setSpeed} />
             <div className="flex flex-wrap items-end gap-2">
               <ControlButton onClick={() => setGrid(randomObstacles(createGrid(ROWS, COLS), Date.now() % 997))}>
