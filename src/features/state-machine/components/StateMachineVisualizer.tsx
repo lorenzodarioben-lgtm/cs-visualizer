@@ -24,7 +24,7 @@ export function StateMachineVisualizer() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="control-label">Finite State Machine Demo</p>
-              <h2 className="mt-1 text-2xl font-black text-slate-950">Turnstile: Locked ↔ Unlocked</h2>
+              <h2 className="mt-1 text-2xl font-black heading-strong">Turnstile: Locked ↔ Unlocked</h2>
             </div>
             <div className="flex flex-wrap gap-2">
               <ControlButton variant="primary" onClick={() => trigger('coin')}>Input: coin</ControlButton>
@@ -32,9 +32,9 @@ export function StateMachineVisualizer() {
               <ControlButton variant="ghost" onClick={() => setInputs([])}>Reset history</ControlButton>
             </div>
           </div>
-          <div className="mt-5 flex flex-wrap items-center gap-3 rounded-2xl bg-slate-50 p-4">
+          <div className="mt-5 flex flex-wrap items-center gap-3 rounded-2xl surface-muted p-4">
             <span className="control-label">Initial state</span>
-            <select className="focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold" value={initialState} onChange={(event) => { setInitialState(event.target.value as TurnstileState); setInputs([]); }}>
+            <select className="control-input" value={initialState} onChange={(event) => { setInitialState(event.target.value as TurnstileState); setInputs([]); }}>
               <option value="Locked">Locked</option>
               <option value="Unlocked">Unlocked</option>
             </select>
@@ -71,13 +71,13 @@ export function StateMachineVisualizer() {
 function StateDiagram({ current }: { current: StateMachineStep }) {
   const locked = current.currentState === 'Locked';
   return (
-    <div className="relative flex min-h-[20rem] items-center justify-center rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-100 p-5">
-      <div className={`flex h-32 w-32 items-center justify-center rounded-full border-4 border-white text-xl font-black shadow-lg ${locked ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-700'}`}>Locked</div>
+    <div className="relative flex min-h-[20rem] items-center justify-center canvas-surface p-5">
+      <div className={`flex h-32 w-32 items-center justify-center rounded-full border-4 border-white text-xl font-black shadow-lg ${locked ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'}`}>Locked</div>
       <div className="mx-6 grid gap-3 text-center text-sm font-bold text-slate-500">
         <span>coin →</span>
         <span>← push</span>
       </div>
-      <div className={`flex h-32 w-32 items-center justify-center rounded-full border-4 border-white text-xl font-black shadow-lg ${!locked ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-700'}`}>Unlocked</div>
+      <div className={`flex h-32 w-32 items-center justify-center rounded-full border-4 border-white text-xl font-black shadow-lg ${!locked ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'}`}>Unlocked</div>
     </div>
   );
 }
@@ -90,7 +90,7 @@ function TransitionTable() {
       <div className="overflow-x-auto">
         <table className="w-full text-left text-sm">
           <thead className="text-xs uppercase tracking-wider text-slate-500"><tr><th className="py-2">From</th><th>Input</th><th>To</th></tr></thead>
-          <tbody>{rows.map((row) => <tr className="border-t border-slate-100" key={`${row.from}-${row.input}`}><td className="py-2 font-semibold">{row.from}</td><td>{row.input}</td><td>{row.to}</td></tr>)}</tbody>
+          <tbody>{rows.map((row) => <tr className="border-t border-slate-100 dark:border-slate-800" key={`${row.from}-${row.input}`}><td className="py-2 font-semibold">{row.from}</td><td>{row.input}</td><td>{row.to}</td></tr>)}</tbody>
         </table>
       </div>
     </div>
@@ -103,8 +103,8 @@ function HistoryList({ step }: { step: StateMachineStep }) {
       <p className="control-label mb-3">Transition history</p>
       <div className="max-h-52 space-y-2 overflow-auto text-sm">
         {step.history.length === 0 ? <p className="text-slate-500">No inputs yet.</p> : step.history.map((item, index) => (
-          <div className="rounded-xl bg-slate-100 p-2" key={`${item.input}-${index}`}>
-            <span className="font-bold text-slate-900">{item.from}</span> + <span className="font-bold text-indigo-700">{item.input}</span> → <span className="font-bold text-slate-900">{item.to}</span>
+          <div className="rounded-xl surface-inset p-2" key={`${item.input}-${index}`}>
+            <span className="font-bold text-slate-900 dark:text-slate-100">{item.from}</span> + <span className="font-bold text-indigo-700 dark:text-indigo-300">{item.input}</span> → <span className="font-bold text-slate-900 dark:text-slate-100">{item.to}</span>
           </div>
         ))}
       </div>

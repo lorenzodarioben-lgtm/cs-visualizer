@@ -35,16 +35,16 @@ export function SortingVisualizer() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="control-label">Sorting Visualizer</p>
-              <h2 className="mt-1 text-2xl font-black text-slate-950">Compare, swap, partition, merge</h2>
+              <h2 className="mt-1 text-2xl font-black heading-strong">Compare, swap, partition, merge</h2>
             </div>
             <PlaybackControls controller={controller} />
           </div>
 
-          <div className="mt-5 grid gap-4 rounded-2xl bg-slate-50 p-4 lg:grid-cols-4">
+          <div className="mt-5 grid gap-4 rounded-2xl surface-muted p-4 lg:grid-cols-4">
             <label className="grid gap-2">
               <span className="control-label">Algorithm</span>
               <select
-                className="focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700"
+                className="control-input"
                 value={algorithm}
                 onChange={(event) => setAlgorithm(event.target.value as SortAlgorithm)}
               >
@@ -80,9 +80,9 @@ export function SortingVisualizer() {
                 { label: 'Sorted', className: 'bg-emerald-500' },
               ]}
             />
-            <span className="text-xs font-semibold text-slate-500">Current action: {current.action}</span>
+            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Current action: {current.action}</span>
           </div>
-          <div className="flex h-[22rem] items-end gap-1 rounded-3xl border border-slate-200 bg-gradient-to-b from-white to-slate-100 p-4">
+          <div className="canvas-surface flex h-[22rem] items-end gap-1 p-4">
             {current.array.map((value, index) => (
               <Bar key={`${index}-${value}`} step={current} value={value} index={index} maxValue={maxValue} />
             ))}
@@ -125,7 +125,7 @@ function Bar({ step, value, index, maxValue }: { step: SortStep; value: number; 
           ? 'bg-amber-400'
           : isActive
             ? 'bg-sky-500'
-            : 'bg-slate-400';
+            : 'bg-slate-400 dark:bg-slate-600';
 
   return (
     <div className="group relative flex flex-1 items-end justify-center">

@@ -33,16 +33,16 @@ export function GraphVisualizer() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="control-label">Graph Traversal Visualizer</p>
-              <h2 className="mt-1 text-2xl font-black text-slate-950">BFS queue vs DFS stack</h2>
+              <h2 className="mt-1 text-2xl font-black heading-strong">BFS queue vs DFS stack</h2>
             </div>
             <PlaybackControls controller={controller} />
           </div>
 
-          <div className="mt-5 grid gap-4 rounded-2xl bg-slate-50 p-4 md:grid-cols-4">
+          <div className="mt-5 grid gap-4 rounded-2xl surface-muted p-4 md:grid-cols-4">
             <label className="grid gap-2">
               <span className="control-label">Graph</span>
               <select
-                className="focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold"
+                className="control-input"
                 value={exampleId}
                 onChange={(event) => {
                   const next = GRAPH_EXAMPLES.find((item) => item.id === event.target.value) ?? GRAPH_EXAMPLES[0];
@@ -55,14 +55,14 @@ export function GraphVisualizer() {
             </label>
             <label className="grid gap-2">
               <span className="control-label">Traversal</span>
-              <select className="focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold" value={mode} onChange={(event) => setMode(event.target.value as TraversalMode)}>
+              <select className="control-input" value={mode} onChange={(event) => setMode(event.target.value as TraversalMode)}>
                 <option value="bfs">Breadth-First Search</option>
                 <option value="dfs">Depth-First Search</option>
               </select>
             </label>
             <label className="grid gap-2">
               <span className="control-label">Start node</span>
-              <select className="focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold" value={startNode} onChange={(event) => setStartNode(event.target.value)}>
+              <select className="control-input" value={startNode} onChange={(event) => setStartNode(event.target.value)}>
                 {graph.nodes.map((node) => <option key={node.id} value={node.id}>{node.label}</option>)}
               </select>
             </label>
@@ -73,9 +73,9 @@ export function GraphVisualizer() {
         <div className="panel p-5">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <Legend items={[{ label: 'Current', className: 'bg-indigo-600' }, { label: 'Frontier', className: 'bg-amber-400' }, { label: 'Visited', className: 'bg-sky-400' }, { label: 'Completed', className: 'bg-emerald-500' }]} />
-            <div className="flex gap-2 text-xs font-semibold text-slate-600">
-              <span className="rounded-full bg-slate-100 px-3 py-1">Frontier: {current.frontier.join(' → ') || 'empty'}</span>
-              <span className="rounded-full bg-slate-100 px-3 py-1">Output: {current.output.join(', ') || 'none'}</span>
+            <div className="flex gap-2 text-xs font-semibold">
+              <span className="pill">Frontier: {current.frontier.join(' → ') || 'empty'}</span>
+              <span className="pill">Output: {current.output.join(', ') || 'none'}</span>
             </div>
           </div>
           <GraphCanvas graph={graph} step={current} />
@@ -105,7 +105,7 @@ export function GraphVisualizer() {
 function GraphCanvas({ graph, step }: { graph: GraphExample; step: TraversalStep }) {
   const nodesById = Object.fromEntries(graph.nodes.map((node) => [node.id, node]));
   return (
-    <svg viewBox="0 0 520 340" role="img" aria-label="Graph traversal canvas" className="h-[24rem] w-full rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-100">
+    <svg viewBox="0 0 520 340" role="img" aria-label="Graph traversal canvas" className="canvas-surface h-[24rem] w-full">
       {graph.edges.map((edge) => {
         const from = nodesById[edge.from];
         const to = nodesById[edge.to];

@@ -7,9 +7,11 @@ type ControlButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const variants = {
   primary: 'bg-indigo-600 text-white hover:bg-indigo-700 border-indigo-600',
-  secondary: 'bg-white text-slate-700 hover:bg-slate-50 border-slate-200',
+  secondary:
+    'bg-white text-slate-700 hover:bg-slate-50 border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700 dark:hover:bg-slate-700',
   danger: 'bg-rose-600 text-white hover:bg-rose-700 border-rose-600',
-  ghost: 'bg-transparent text-slate-600 hover:bg-slate-100 border-transparent',
+  ghost:
+    'bg-transparent text-slate-600 hover:bg-slate-100 border-transparent dark:text-slate-300 dark:hover:bg-slate-800',
 };
 
 export function ControlButton({ children, variant = 'secondary', className = '', ...props }: ControlButtonProps) {

@@ -39,15 +39,15 @@ export function HeapVisualizer() {
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p className="control-label">Heap Operations Visualizer</p>
-              <h2 className="mt-1 text-2xl font-black text-slate-950">Min-heap tree and backing array</h2>
+              <h2 className="mt-1 text-2xl font-black heading-strong">Min-heap tree and backing array</h2>
             </div>
             <PlaybackControls controller={controller} />
           </div>
 
-          <div className="mt-5 grid gap-4 rounded-2xl bg-slate-50 p-4 lg:grid-cols-[1fr_1fr_1fr]">
+          <div className="mt-5 grid gap-4 rounded-2xl surface-muted p-4 lg:grid-cols-[1fr_1fr_1fr]">
             <label className="grid gap-2">
               <span className="control-label">Value</span>
-              <input className="focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold" type="number" value={value} onChange={(event) => setValue(Number(event.target.value))} />
+              <input className="control-input" type="number" value={value} onChange={(event) => setValue(Number(event.target.value))} />
             </label>
             <SliderControl label="Speed" min={1} max={100} suffix="%" value={speed} onChange={setSpeed} />
             <div className="flex flex-wrap items-end gap-2">
@@ -57,7 +57,7 @@ export function HeapVisualizer() {
             </div>
             <label className="grid gap-2 lg:col-span-2">
               <span className="control-label">Heapify from array</span>
-              <input className="focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold" value={rawArray} onChange={(event) => setRawArray(event.target.value)} />
+              <input className="control-input" value={rawArray} onChange={(event) => setRawArray(event.target.value)} />
             </label>
             <div className="flex items-end">
               <ControlButton className="w-full" onClick={() => run(heapifySteps(parseRawArray()))}>Heapify</ControlButton>
@@ -72,7 +72,7 @@ export function HeapVisualizer() {
           </div>
 
           <div className="grid gap-5 lg:grid-cols-[1fr_18rem]">
-            <div className="rounded-3xl border border-slate-200 bg-gradient-to-b from-white to-slate-100 p-5">
+            <div className="canvas-surface p-5">
               <div className="grid gap-5">
                 {levels.map((level, levelIndex) => (
                   <div className="flex justify-center gap-4" key={levelIndex}>
@@ -129,8 +129,8 @@ function HeapArrayCell({ value, index, step }: { value: number; index: number; s
   const active = step.comparedIndices?.includes(index);
   const swapped = step.swappedIndices?.includes(index);
   return (
-    <div className={`rounded-xl p-2 text-center text-sm font-bold ${swapped ? 'bg-rose-100 text-rose-700' : active ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700'}`}>
-      <span className="block text-[0.65rem] text-slate-400">{index}</span>{value}
+    <div className={`rounded-xl p-2 text-center text-sm font-bold ${swapped ? 'bg-rose-100 text-rose-700' : active ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>
+      <span className="block text-[0.65rem] text-slate-400 dark:text-slate-500">{index}</span>{value}
     </div>
   );
 }

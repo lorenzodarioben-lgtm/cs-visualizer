@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTheme } from './lib/theme/useTheme';
 import { AppShell } from './components/layout/AppShell';
 import { SortingVisualizer } from './features/sorting/components/SortingVisualizer';
 import { GraphVisualizer } from './features/graph/components/GraphVisualizer';
@@ -10,9 +11,10 @@ export type VisualizerKey = 'sorting' | 'graph' | 'heap' | 'linked-list' | 'stat
 
 export default function App() {
   const [active, setActive] = useState<VisualizerKey>('sorting');
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <AppShell active={active} onChange={setActive}>
+    <AppShell active={active} onChange={setActive} theme={theme} onToggleTheme={toggleTheme}>
       {active === 'sorting' && <SortingVisualizer />}
       {active === 'graph' && <GraphVisualizer />}
       {active === 'heap' && <HeapVisualizer />}
