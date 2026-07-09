@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "description": "Interactive data structures and algorithms visualizer for computer science learners.",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
