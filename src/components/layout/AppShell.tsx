@@ -26,6 +26,17 @@ const navItems: NavItem[] = [
     ),
   },
   {
+    key: 'pathfinding',
+    label: 'Pathfinding',
+    description: 'Grid BFS, Dijkstra, and A*',
+    icon: (
+      <NavGlyph>
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M3 9h18M3 15h18M9 3v18M15 3v18" fill="none" />
+      </NavGlyph>
+    ),
+  },
+  {
     key: 'heap',
     label: 'Heap',
     description: 'Min-heap operations',
@@ -98,8 +109,8 @@ export function AppShell({ active, onChange, theme, onToggleTheme, children }: A
                 and pseudocode you can follow along.
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
-                <StatChip value="5" label="visualizers" />
-                <StatChip value="9+" label="algorithms" />
+                <StatChip value="6" label="visualizers" />
+                <StatChip value="12+" label="algorithms" />
                 <StatChip value="TypeScript" label="fully typed" />
                 <StatChip value="tested" label="pure logic" />
               </div>
