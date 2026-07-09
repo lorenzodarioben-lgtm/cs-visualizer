@@ -122,14 +122,14 @@ function heapLevels(heap: number[]) {
 function HeapNode({ value, index, step }: { value: number; index: number; step: HeapStep }) {
   const active = step.comparedIndices?.includes(index);
   const swapped = step.swappedIndices?.includes(index);
-  return <div className={`flex h-14 w-14 items-center justify-center rounded-2xl border-4 border-white text-lg font-black text-white shadow-lg ${swapped ? 'bg-rose-500' : active ? 'bg-amber-400' : 'bg-indigo-500'}`} title={`Index ${index}`}>{value}</div>;
+  return <div className={`flex h-14 w-14 items-center justify-center rounded-2xl border-4 border-white text-lg font-black text-white shadow-lg transition-colors duration-300 dark:border-slate-900 ${swapped ? 'bg-rose-500' : active ? 'bg-amber-400' : 'bg-indigo-500'}`} title={`Index ${index}`}>{value}</div>;
 }
 
 function HeapArrayCell({ value, index, step }: { value: number; index: number; step: HeapStep }) {
   const active = step.comparedIndices?.includes(index);
   const swapped = step.swappedIndices?.includes(index);
   return (
-    <div className={`rounded-xl p-2 text-center text-sm font-bold ${swapped ? 'bg-rose-100 text-rose-700' : active ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>
+    <div className={`rounded-xl p-2 text-center text-sm font-bold transition-colors duration-300 ${swapped ? 'bg-rose-100 text-rose-700' : active ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>
       <span className="block text-[0.65rem] text-slate-400 dark:text-slate-500">{index}</span>{value}
     </div>
   );

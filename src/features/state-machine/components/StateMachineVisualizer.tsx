@@ -72,12 +72,12 @@ function StateDiagram({ current }: { current: StateMachineStep }) {
   const locked = current.currentState === 'Locked';
   return (
     <div className="relative flex min-h-[20rem] items-center justify-center canvas-surface p-5">
-      <div className={`flex h-32 w-32 items-center justify-center rounded-full border-4 border-white text-xl font-black shadow-lg ${locked ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'}`}>Locked</div>
+      <div className={`flex h-32 w-32 items-center justify-center rounded-full border-4 border-white text-xl font-black shadow-lg transition-colors duration-300 dark:border-slate-900 ${locked ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'}`}>Locked</div>
       <div className="mx-6 grid gap-3 text-center text-sm font-bold text-slate-500">
         <span>coin →</span>
         <span>← push</span>
       </div>
-      <div className={`flex h-32 w-32 items-center justify-center rounded-full border-4 border-white text-xl font-black shadow-lg ${!locked ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'}`}>Unlocked</div>
+      <div className={`flex h-32 w-32 items-center justify-center rounded-full border-4 border-white text-xl font-black shadow-lg transition-colors duration-300 dark:border-slate-900 ${!locked ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'}`}>Unlocked</div>
     </div>
   );
 }

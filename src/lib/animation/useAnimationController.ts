@@ -5,6 +5,8 @@ export type AnimationController<T> = {
   currentStepIndex: number;
   totalSteps: number;
   isPlaying: boolean;
+  loop: boolean;
+  progress: number;
   canGoBack: boolean;
   canGoForward: boolean;
   play: () => void;
@@ -14,11 +16,13 @@ export type AnimationController<T> = {
   next: () => void;
   previous: () => void;
   setStepIndex: (index: number) => void;
+  toggleLoop: () => void;
 };
 
 export function useAnimationController<T>(steps: T[], speedMs: number): AnimationController<T> {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [loop, setLoop] = useState(false);
 
   useEffect(() => {
     setCurrentStepIndex(0);
@@ -34,6 +38,7 @@ export function useAnimationController<T>(steps: T[], speedMs: number): Animatio
     const interval = window.setInterval(() => {
       setCurrentStepIndex((index) => {
         if (index >= maxIndex) {
+          if (loop) return 0;
           window.clearInterval(interval);
           setIsPlaying(false);
           return index;
@@ -43,7 +48,7 @@ export function useAnimationController<T>(steps: T[], speedMs: number): Animatio
     }, Math.max(80, speedMs));
 
     return () => window.clearInterval(interval);
-  }, [isPlaying, maxIndex, speedMs, totalSteps]);
+  }, [isPlaying, loop, maxIndex, speedMs, totalSteps]);
 
   const setStepIndex = useCallback(
     (index: number) => {
@@ -74,12 +79,16 @@ export function useAnimationController<T>(steps: T[], speedMs: number): Animatio
     setCurrentStepIndex((index) => Math.max(0, index - 1));
   }, []);
 
+  const toggleLoop = useCallback(() => setLoop((value) => !value), []);
+
   return useMemo(
     () => ({
       currentStep: steps[currentStepIndex],
       currentStepIndex,
       totalSteps,
       isPlaying,
+      loop,
+      progress: maxIndex === 0 ? 0 : currentStepIndex / maxIndex,
       canGoBack: currentStepIndex > 0,
       canGoForward: currentStepIndex < maxIndex,
       play,
@@ -89,10 +98,12 @@ export function useAnimationController<T>(steps: T[], speedMs: number): Animatio
       next,
       previous,
       setStepIndex,
+      toggleLoop,
     }),
     [
       currentStepIndex,
       isPlaying,
+      loop,
       maxIndex,
       next,
       pause,
@@ -102,6 +113,7 @@ export function useAnimationController<T>(steps: T[], speedMs: number): Animatio
       resume,
       setStepIndex,
       steps,
+      toggleLoop,
       totalSteps,
     ],
   );

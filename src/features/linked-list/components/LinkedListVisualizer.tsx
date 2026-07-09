@@ -103,7 +103,7 @@ function ListNode({ value, index, step }: { value: number; index: number; step: 
   const target = step.targetIndex === index;
   return (
     <div className="flex items-center">
-      <div className={`relative flex h-20 w-24 shrink-0 flex-col items-center justify-center rounded-2xl border-4 border-white shadow-lg ${target ? 'bg-emerald-500 text-white' : active ? 'bg-indigo-600 text-white' : previous ? 'bg-amber-400 text-white' : 'bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-100'}`}>
+      <div className={`relative flex h-20 w-24 shrink-0 flex-col items-center justify-center rounded-2xl border-4 border-white shadow-lg transition-colors duration-300 dark:border-slate-900 ${target ? 'bg-emerald-500 text-white' : active ? 'bg-indigo-600 text-white' : previous ? 'bg-amber-400 text-white' : 'bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-100'}`}>
         <span className="text-xs font-bold opacity-70">idx {index}</span>
         <span className="text-2xl font-black">{value}</span>
         {index === 0 && <span className="absolute -top-7 rounded-full bg-slate-950 px-2 py-1 text-[0.65rem] font-bold text-white">HEAD</span>}

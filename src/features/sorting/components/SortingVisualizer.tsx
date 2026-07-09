@@ -4,13 +4,26 @@ import { ControlButton } from '../../../components/controls/ControlButton';
 import { ExplanationPanel } from '../../../components/explanation/ExplanationPanel';
 import { PseudocodePanel } from '../../../components/explanation/PseudocodePanel';
 import { Legend } from '../../../components/visualization/Legend';
+import { StatusBadge, type StatusTone } from '../../../components/visualization/StatusBadge';
 import { PlaybackControls } from '../../../components/layout/PlaybackControls';
 import { speedToDelayMs, useAnimationController } from '../../../lib/animation/useAnimationController';
+import { useReducedMotion } from '../../../lib/animation/useReducedMotion';
 import { generateSortSteps, randomArray } from '../algorithms/sortingAlgorithms';
 import { SORT_INFO } from '../algorithms/sortInfo';
 import type { SortAlgorithm, SortStep } from '../sortingTypes';
 
 const algorithms: SortAlgorithm[] = ['bubble', 'selection', 'insertion', 'merge', 'quick'];
+
+const ACTION_STATUS: Record<SortStep['action'], { tone: StatusTone; label: string }> = {
+  initial: { tone: 'neutral', label: 'Ready' },
+  compare: { tone: 'compare', label: 'Comparing' },
+  swap: { tone: 'swap', label: 'Swapping' },
+  overwrite: { tone: 'active', label: 'Writing' },
+  'mark-sorted': { tone: 'done', label: 'Locked in' },
+  pivot: { tone: 'pivot', label: 'Pivot' },
+  partition: { tone: 'active', label: 'Partitioning' },
+  complete: { tone: 'done', label: 'Sorted' },
+};
 
 export function SortingVisualizer() {
   const [algorithm, setAlgorithm] = useState<SortAlgorithm>('bubble');
@@ -23,6 +36,7 @@ export function SortingVisualizer() {
   const current = controller.currentStep ?? steps[0];
   const info = SORT_INFO[algorithm];
   const maxValue = Math.max(1, ...current.array);
+  const reducedMotion = useReducedMotion();
 
   function generateNewArray(size = arraySize) {
     setArray(randomArray(size));
@@ -80,11 +94,11 @@ export function SortingVisualizer() {
                 { label: 'Sorted', className: 'bg-emerald-500' },
               ]}
             />
-            <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Current action: {current.action}</span>
+            <StatusBadge tone={ACTION_STATUS[current.action].tone} label={ACTION_STATUS[current.action].label} />
           </div>
           <div className="canvas-surface flex h-[22rem] items-end gap-1 p-4">
             {current.array.map((value, index) => (
-              <Bar key={`${index}-${value}`} step={current} value={value} index={index} maxValue={maxValue} />
+              <Bar key={`${index}-${value}`} step={current} value={value} index={index} maxValue={maxValue} reducedMotion={reducedMotion} />
             ))}
           </div>
         </div>
@@ -107,7 +121,7 @@ export function SortingVisualizer() {
   );
 }
 
-function Bar({ step, value, index, maxValue }: { step: SortStep; value: number; index: number; maxValue: number }) {
+function Bar({ step, value, index, maxValue, reducedMotion }: { step: SortStep; value: number; index: number; maxValue: number; reducedMotion: boolean }) {
   const { highlights } = step;
   const isSorted = highlights.sorted?.includes(index);
   const isComparing = highlights.comparing?.includes(index);
@@ -125,12 +139,12 @@ function Bar({ step, value, index, maxValue }: { step: SortStep; value: number; 
           ? 'bg-amber-400'
           : isActive
             ? 'bg-sky-500'
-            : 'bg-slate-400 dark:bg-slate-600';
+            : 'bg-slate-400 dark:bg-slate-500';
 
   return (
     <div className="group relative flex flex-1 items-end justify-center">
       <div
-        className={`w-full rounded-t-lg transition-all duration-200 ${color}`}
+        className={`w-full rounded-t-lg ${color} ${reducedMotion ? '' : 'transition-all duration-200'}`}
         style={{ height }}
         title={`Index ${index}: ${value}`}
       />
