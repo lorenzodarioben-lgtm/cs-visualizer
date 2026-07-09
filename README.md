@@ -1,6 +1,6 @@
 # CS Visualizer
 
-`cs-visualizer` is an interactive data structures and algorithms visualizer built with Vite, React, TypeScript, Tailwind CSS, and Vitest. It is designed as a portfolio-ready educational project for computer science learners who want to understand algorithms by watching real state transitions instead of static diagrams.
+`cs-visualizer` is an interactive data structures and algorithms visualizer built with Vite, React, TypeScript, Tailwind CSS, and Vitest. It is the showcase of the cumulative knowledge I have gained over several units and trimesters in Uni, aiming for High DIstinction. It is designed as a portfolio-ready educational project for computer science learners who want to understand algorithms by watching real state transitions instead of static diagrams.
 
 ## Features
 
