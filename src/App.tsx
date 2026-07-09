@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { useTheme } from './lib/theme/useTheme';
+import { useLocalStorage } from './lib/utils/useLocalStorage';
 import { AppShell } from './components/layout/AppShell';
 import { SortingVisualizer } from './features/sorting/components/SortingVisualizer';
 import { GraphVisualizer } from './features/graph/components/GraphVisualizer';
@@ -16,8 +16,25 @@ export type VisualizerKey =
   | 'linked-list'
   | 'state-machine';
 
+const VISUALIZER_KEYS: VisualizerKey[] = [
+  'sorting',
+  'graph',
+  'pathfinding',
+  'heap',
+  'linked-list',
+  'state-machine',
+];
+
+function isVisualizerKey(value: unknown): value is VisualizerKey {
+  return typeof value === 'string' && (VISUALIZER_KEYS as string[]).includes(value);
+}
+
 export default function App() {
-  const [active, setActive] = useState<VisualizerKey>('sorting');
+  const [active, setActive] = useLocalStorage<VisualizerKey>(
+    'cs-visualizer:active',
+    'sorting',
+    isVisualizerKey,
+  );
   const { theme, toggleTheme } = useTheme();
 
   return (

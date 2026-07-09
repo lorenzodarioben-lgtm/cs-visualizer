@@ -8,6 +8,7 @@ import { StatusBadge, type StatusTone } from '../../../components/visualization/
 import { PlaybackControls } from '../../../components/layout/PlaybackControls';
 import { speedToDelayMs, useAnimationController } from '../../../lib/animation/useAnimationController';
 import { useReducedMotion } from '../../../lib/animation/useReducedMotion';
+import { clampNumber, parseNumberList } from '../../../lib/utils/arrays';
 import { generateSortSteps, randomArray } from '../algorithms/sortingAlgorithms';
 import { SORT_INFO } from '../algorithms/sortInfo';
 import type { SortAlgorithm, SortStep } from '../sortingTypes';
@@ -30,6 +31,8 @@ export function SortingVisualizer() {
   const [arraySize, setArraySize] = useState(18);
   const [speed, setSpeed] = useState(55);
   const [array, setArray] = useState(() => randomArray(18));
+  const [customInput, setCustomInput] = useState('');
+  const [inputError, setInputError] = useState<string | null>(null);
 
   const steps = useMemo(() => generateSortSteps(algorithm, array), [algorithm, array]);
   const controller = useAnimationController<SortStep>(steps, speedToDelayMs(speed));
@@ -40,6 +43,19 @@ export function SortingVisualizer() {
 
   function generateNewArray(size = arraySize) {
     setArray(randomArray(size));
+    setInputError(null);
+  }
+
+  function applyCustomArray() {
+    const values = parseNumberList(customInput).map((value) => clampNumber(Math.round(value), 1, 100));
+    if (values.length < 2) {
+      setInputError('Enter at least two numbers (1–100), separated by commas.');
+      return;
+    }
+    const trimmed = values.slice(0, 42);
+    setArray(trimmed);
+    setArraySize(trimmed.length);
+    setInputError(null);
   }
 
   return (
@@ -82,6 +98,41 @@ export function SortingVisualizer() {
               <ControlButton className="w-full" onClick={() => generateNewArray()}>Random array</ControlButton>
             </div>
           </div>
+
+          <form
+            className="mt-4 grid gap-2"
+            onSubmit={(event) => {
+              event.preventDefault();
+              applyCustomArray();
+            }}
+          >
+            <span className="control-label">Custom array</span>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <input
+                className="control-input flex-1"
+                value={customInput}
+                placeholder="e.g. 42, 8, 15, 4, 23, 16"
+                aria-label="Custom array values"
+                aria-invalid={inputError !== null}
+                onChange={(event) => setCustomInput(event.target.value)}
+              />
+              <ControlButton type="submit" variant="secondary">Use my array</ControlButton>
+              <ControlButton
+                type="button"
+                variant="ghost"
+                onClick={() => setCustomInput(array.join(', '))}
+              >
+                Copy current
+              </ControlButton>
+            </div>
+            {inputError ? (
+              <p className="text-xs font-semibold text-rose-600 dark:text-rose-400">{inputError}</p>
+            ) : (
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Values are rounded and clamped to 1–100 (up to 42 items).
+              </p>
+            )}
+          </form>
         </div>
 
         <div className="panel p-5">
