@@ -24,7 +24,7 @@ export function PlaybackControls<T>({ controller }: PlaybackControlsProps<T>) {
   }
 
   return (
-    <div className="grid gap-3">
+    <div className="grid min-w-0 gap-3 lg:w-80 lg:shrink-0">
       <div className="flex flex-wrap items-center gap-2">
         <ControlButton
           variant="primary"

@@ -60,18 +60,18 @@ export function SortingVisualizer() {
   }
 
   return (
-    <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem]">
-      <div className="grid gap-5">
-        <div className="panel p-5">
+    <section className="grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,1fr)_24rem]">
+      <div className="grid min-w-0 gap-5">
+        <div className="panel min-w-0 p-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div>
+            <div className="min-w-0">
               <p className="control-label">Sorting Visualizer</p>
               <h2 className="mt-1 text-2xl font-black heading-strong">Compare, swap, partition, merge</h2>
             </div>
             <PlaybackControls controller={controller} />
           </div>
 
-          <div className="mt-5 grid gap-4 rounded-2xl surface-muted p-4 lg:grid-cols-4">
+          <div className="mt-5 grid grid-cols-1 gap-4 rounded-2xl surface-muted p-4 sm:grid-cols-2 xl:grid-cols-4">
             <SelectControl
               label="Algorithm"
               value={algorithm}
@@ -130,7 +130,7 @@ export function SortingVisualizer() {
           </form>
         </div>
 
-        <div className="panel p-5">
+        <div className="panel min-w-0 p-5">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <Legend
               items={[
@@ -142,9 +142,9 @@ export function SortingVisualizer() {
             />
             <StatusBadge tone={ACTION_STATUS[current.action].tone} label={ACTION_STATUS[current.action].label} />
           </div>
-          <div className="canvas-surface flex h-[22rem] items-end gap-1 p-4">
+          <div className="canvas-surface flex h-56 items-end gap-0.5 overflow-hidden p-3 sm:h-72 sm:gap-1 sm:p-4 xl:h-[22rem]">
             {current.array.map((value, index) => (
-              <Bar key={`${index}-${value}`} step={current} value={value} index={index} maxValue={maxValue} reducedMotion={reducedMotion} />
+              <Bar key={index} step={current} value={value} index={index} maxValue={maxValue} reducedMotion={reducedMotion} />
             ))}
           </div>
         </div>
@@ -188,13 +188,13 @@ function Bar({ step, value, index, maxValue, reducedMotion }: { step: SortStep; 
             : 'bg-slate-400 dark:bg-slate-500';
 
   return (
-    <div className="group relative flex flex-1 items-end justify-center">
+    <div className="group relative flex h-full min-w-0 flex-1 items-end justify-center">
       <div
-        className={`w-full rounded-t-lg ${color} ${reducedMotion ? '' : 'transition-all duration-200'}`}
+        className={`w-full rounded-t ${color} ${reducedMotion ? '' : 'transition-all duration-200'}`}
         style={{ height }}
         title={`Index ${index}: ${value}`}
       />
-      <span className="absolute -bottom-6 hidden rounded bg-slate-900 px-1.5 py-0.5 text-[0.65rem] text-white group-hover:block">
+      <span className="pointer-events-none absolute top-1 z-10 hidden rounded bg-slate-900 px-1.5 py-0.5 text-[0.65rem] text-white shadow group-hover:block dark:bg-slate-700">
         {value}
       </span>
     </div>
