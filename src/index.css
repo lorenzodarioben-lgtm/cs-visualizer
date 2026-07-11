@@ -77,7 +77,7 @@ select {
 
   /* Text inputs and selects inside control trays. */
   .control-input {
-    @apply focus-ring rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700;
+    @apply focus-ring w-full min-w-0 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700;
     @apply dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100;
   }
 
