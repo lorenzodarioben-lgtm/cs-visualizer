@@ -4,6 +4,25 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **Sorting swap animation.** Sorting steps now carry an element-identity array,
+  and the bars are keyed by identity and positioned by index. A swap animates as
+  the two bars sliding to exchange places — each bar keeps its own height and
+  value throughout — instead of one bar growing while the other shrinks.
+  Insertion sort was reworked into the adjacent-swap variant so it slides too,
+  while merge sort keeps its copy-based height writes. The slide duration scales
+  with the playback speed so a swap always finishes before the next step, the
+  two swapping bars are lifted and layered so they pass cleanly without
+  overlapping, and reduced-motion preferences disable the movement.
+
+### Removed
+
+- The committed `BUILD_REPORT.txt` console dump and the tracked local dev-server
+  launch config.
+
 ## [2.0.0] — Interactive & portfolio overhaul
 
 A sprint focused on making CS Visualizer feel like a polished, modern portfolio
