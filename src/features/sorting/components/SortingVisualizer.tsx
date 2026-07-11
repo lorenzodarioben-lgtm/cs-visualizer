@@ -14,7 +14,14 @@ import { generateSortSteps, randomArray } from '../algorithms/sortingAlgorithms'
 import { SORT_INFO } from '../algorithms/sortInfo';
 import type { SortAlgorithm, SortHighlights, SortStep } from '../sortingTypes';
 
-const SLIDE_MS = 240;
+/**
+ * Keep the slide a little shorter than the gap between steps so a swap always
+ * finishes before the next step begins, and cap it so slow speeds are not
+ * sluggish.
+ */
+function slideDurationMs(stepDelayMs: number): number {
+  return Math.round(Math.min(520, Math.max(60, stepDelayMs * 0.8)));
+}
 
 const algorithms: SortAlgorithm[] = ['bubble', 'selection', 'insertion', 'merge', 'quick'];
 
@@ -38,11 +45,13 @@ export function SortingVisualizer() {
   const [inputError, setInputError] = useState<string | null>(null);
 
   const steps = useMemo(() => generateSortSteps(algorithm, array), [algorithm, array]);
-  const controller = useAnimationController<SortStep>(steps, speedToDelayMs(speed));
+  const stepDelayMs = speedToDelayMs(speed);
+  const controller = useAnimationController<SortStep>(steps, stepDelayMs);
   const current = controller.currentStep ?? steps[0];
   const info = SORT_INFO[algorithm];
   const maxValue = Math.max(1, ...current.array);
   const reducedMotion = useReducedMotion();
+  const durationMs = slideDurationMs(stepDelayMs);
 
   function generateNewArray(size = arraySize) {
     setArray(randomArray(size));
@@ -153,6 +162,7 @@ export function SortingVisualizer() {
                 count={current.array.length}
                 maxValue={maxValue}
                 highlights={current.highlights}
+                durationMs={durationMs}
                 reducedMotion={reducedMotion}
               />
             ))}
@@ -183,10 +193,11 @@ type BarProps = {
   count: number;
   maxValue: number;
   highlights: SortHighlights;
+  durationMs: number;
   reducedMotion: boolean;
 };
 
-function Bar({ value, index, count, maxValue, highlights, reducedMotion }: BarProps) {
+function Bar({ value, index, count, maxValue, highlights, durationMs, reducedMotion }: BarProps) {
   const isSorted = highlights.sorted?.includes(index);
   const isComparing = highlights.comparing?.includes(index);
   const isSwapping = highlights.swapping?.includes(index);
@@ -208,8 +219,8 @@ function Bar({ value, index, count, maxValue, highlights, reducedMotion }: BarPr
   // Each bar owns a full-height column and is placed by its index. When a swap
   // moves an element to a new index, only `left` changes, so the bar slides
   // sideways while keeping its own height.
-  const slide = reducedMotion ? undefined : `left ${SLIDE_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`;
-  const grow = reducedMotion ? undefined : `height ${SLIDE_MS}ms ease`;
+  const slide = reducedMotion ? undefined : `left ${durationMs}ms cubic-bezier(0.4, 0, 0.2, 1)`;
+  const grow = reducedMotion ? undefined : `height ${durationMs}ms ease`;
 
   return (
     <div
