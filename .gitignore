@@ -6,3 +6,6 @@ coverage
 .DS_Store
 .vscode/*
 !.vscode/extensions.json
+
+# Local dev tooling config
+.claude
