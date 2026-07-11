@@ -34,17 +34,17 @@ export function LinkedListVisualizer() {
   const current = controller.currentStep ?? steps[0];
 
   return (
-    <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem]">
-      <div className="grid gap-5">
-        <div className="panel p-5">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div>
+    <section className="viz-section">
+      <div className="viz-column">
+        <div className="panel min-w-0 p-5">
+          <div className="viz-header">
+            <div className="min-w-0">
               <p className="control-label">Linked List Visualizer</p>
               <h2 className="mt-1 text-2xl font-black heading-strong">Pointer movement and structural updates</h2>
             </div>
             <PlaybackControls controller={controller} />
           </div>
-          <div className="mt-5 grid gap-4 rounded-2xl surface-muted p-4 lg:grid-cols-[8rem_8rem_1fr]">
+          <div className="mt-5 grid grid-cols-2 gap-4 rounded-2xl surface-muted p-4 sm:grid-cols-[8rem_8rem_minmax(0,1fr)]">
             <label className="grid gap-2">
               <span className="control-label">Value</span>
               <input className="control-input" type="number" value={value} onChange={(event) => setValue(Number(event.target.value))} />
@@ -67,15 +67,19 @@ export function LinkedListVisualizer() {
           </div>
         </div>
 
-        <div className="panel min-h-[22rem] p-5">
+        <div className="panel min-w-0 p-5">
           <div className="mb-4 flex flex-wrap gap-2 text-xs font-semibold">
             <span className="pill">Head: {current.list[0] ?? 'null'}</span>
             <span className="pill">Tail: {current.list.at(-1) ?? 'null'}</span>
             <span className="pill">Length: {current.list.length}</span>
-            {current.warning && <span className="rounded-full bg-rose-100 px-3 py-1 text-rose-700">{current.warning}</span>}
+            {current.warning && <span className="rounded-full bg-rose-100 px-3 py-1 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300">{current.warning}</span>}
           </div>
-          <div className="flex min-h-[13rem] items-center overflow-x-auto canvas-surface p-5">
-            {current.list.length === 0 ? <div className="text-sm font-semibold text-slate-500">Empty list</div> : current.list.map((item, nodeIndex) => <ListNode key={`${item}-${nodeIndex}`} value={item} index={nodeIndex} step={current} />)}
+          <div className="canvas-surface flex min-h-[14rem] items-center gap-0 overflow-x-auto px-5 py-10">
+            {current.list.length === 0 ? (
+              <div className="w-full text-center text-sm font-semibold text-slate-500 dark:text-slate-400">Empty list</div>
+            ) : (
+              current.list.map((item, nodeIndex) => <ListNode key={`${item}-${nodeIndex}`} value={item} index={nodeIndex} step={current} />)
+            )}
           </div>
         </div>
       </div>

@@ -91,6 +91,24 @@ select {
     @apply rounded-3xl border border-slate-200 bg-gradient-to-b from-white to-slate-100;
     @apply dark:border-slate-700/60 dark:from-slate-800/40 dark:to-slate-950/60;
   }
+
+  /* Shared responsive visualizer layout primitives. */
+  .viz-section {
+    @apply grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,1fr)_24rem];
+  }
+
+  .viz-column {
+    @apply grid min-w-0 gap-5;
+  }
+
+  .viz-header {
+    @apply flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between;
+  }
+
+  /* Control tray inside a panel; add grid-cols-* utilities per visualizer. */
+  .control-tray {
+    @apply mt-5 grid grid-cols-1 gap-4 rounded-2xl p-4 surface-muted;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

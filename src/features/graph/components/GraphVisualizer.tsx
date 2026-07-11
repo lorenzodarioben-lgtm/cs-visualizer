@@ -28,10 +28,10 @@ export function GraphVisualizer() {
   const current = controller.currentStep ?? steps[0];
 
   return (
-    <section className="grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,1fr)_24rem]">
-      <div className="grid min-w-0 gap-5">
+    <section className="viz-section">
+      <div className="viz-column">
         <div className="panel min-w-0 p-5">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div className="viz-header">
             <div className="min-w-0">
               <p className="control-label">Graph Traversal Visualizer</p>
               <h2 className="mt-1 text-2xl font-black heading-strong">BFS queue vs DFS stack</h2>
@@ -39,7 +39,7 @@ export function GraphVisualizer() {
             <PlaybackControls controller={controller} />
           </div>
 
-          <div className="mt-5 grid grid-cols-1 gap-4 rounded-2xl surface-muted p-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="control-tray sm:grid-cols-2 xl:grid-cols-4">
             <SelectControl
               label="Graph"
               value={exampleId}

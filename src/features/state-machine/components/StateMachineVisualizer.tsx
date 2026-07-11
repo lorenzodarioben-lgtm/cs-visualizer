@@ -19,11 +19,11 @@ export function StateMachineVisualizer() {
   }
 
   return (
-    <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem]">
-      <div className="grid gap-5">
-        <div className="panel p-5">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div>
+    <section className="viz-section">
+      <div className="viz-column">
+        <div className="panel min-w-0 p-5">
+          <div className="viz-header">
+            <div className="min-w-0">
               <p className="control-label">Finite State Machine Demo</p>
               <h2 className="mt-1 text-2xl font-black heading-strong">Turnstile: Locked ↔ Unlocked</h2>
             </div>
@@ -52,7 +52,7 @@ export function StateMachineVisualizer() {
           </div>
         </div>
 
-        <div className="panel p-5">
+        <div className="panel min-w-0 p-5">
           <StateDiagram current={current} />
           <div className="mt-5 grid gap-4 lg:grid-cols-2">
             <TransitionTable />
@@ -81,13 +81,13 @@ export function StateMachineVisualizer() {
 function StateDiagram({ current }: { current: StateMachineStep }) {
   const locked = current.currentState === 'Locked';
   return (
-    <div className="relative flex min-h-[20rem] items-center justify-center canvas-surface p-5">
-      <div className={`flex h-32 w-32 items-center justify-center rounded-full border-4 border-white text-xl font-black shadow-lg transition-colors duration-300 dark:border-slate-900 ${locked ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'}`}>Locked</div>
-      <div className="mx-6 grid gap-3 text-center text-sm font-bold text-slate-500">
+    <div className="canvas-surface relative flex min-h-[16rem] flex-col flex-wrap items-center justify-center gap-4 p-5 sm:min-h-[20rem] sm:flex-row sm:gap-2">
+      <div className={`flex h-28 w-28 shrink-0 items-center justify-center rounded-full border-4 border-white text-lg font-black shadow-lg transition-colors duration-300 dark:border-slate-900 sm:h-32 sm:w-32 sm:text-xl ${locked ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'}`}>Locked</div>
+      <div className="grid shrink-0 gap-2 px-2 text-center text-sm font-bold text-slate-500 dark:text-slate-400 sm:mx-4">
         <span>coin →</span>
         <span>← push</span>
       </div>
-      <div className={`flex h-32 w-32 items-center justify-center rounded-full border-4 border-white text-xl font-black shadow-lg transition-colors duration-300 dark:border-slate-900 ${!locked ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'}`}>Unlocked</div>
+      <div className={`flex h-28 w-28 shrink-0 items-center justify-center rounded-full border-4 border-white text-lg font-black shadow-lg transition-colors duration-300 dark:border-slate-900 sm:h-32 sm:w-32 sm:text-xl ${!locked ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'}`}>Unlocked</div>
     </div>
   );
 }
