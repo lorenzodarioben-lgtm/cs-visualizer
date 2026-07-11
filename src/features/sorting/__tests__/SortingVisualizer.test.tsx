@@ -25,11 +25,20 @@ describe('SortingVisualizer rendering', () => {
     }
   });
 
-  it('renders each bar inside a full-height column so percentage heights can resolve', () => {
+  it('places each bar in a full-height column addressed by index', () => {
     const { container } = render(<SortingVisualizer />);
-    // The regression was a 0-height flex column; the column must stretch to the row height.
+    // The regression was a 0-height column; the column must span the row height.
+    // It is also positioned by index so a swap can slide it to a new slot.
     const column = getBars(container)[0].parentElement;
-    expect(column?.className).toContain('h-full');
+    expect(column?.className).toContain('inset-y-0');
+    expect(column?.style.left).toMatch(/%$/);
+  });
+
+  it('lays bars out at distinct horizontal positions', () => {
+    const { container } = render(<SortingVisualizer />);
+    const lefts = getBars(container).map((bar) => bar.parentElement!.style.left);
+    // One bar per slot, no two sharing a position (no overlap).
+    expect(new Set(lefts).size).toBe(lefts.length);
   });
 
   it('keeps bars rendered after changing the algorithm', async () => {
