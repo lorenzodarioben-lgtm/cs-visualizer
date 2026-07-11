@@ -20,12 +20,12 @@ export function SegmentedControl<T extends string>({
   ariaLabel,
 }: SegmentedControlProps<T>) {
   return (
-    <div className="grid gap-2">
-      {label ? <span className="control-label">{label}</span> : null}
+    <div className="grid min-w-0 gap-2">
+      {label ? <span className="control-label truncate">{label}</span> : null}
       <div
         role="radiogroup"
         aria-label={ariaLabel ?? label}
-        className="flex gap-1 rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-800"
+        className="flex min-w-0 gap-1 rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-800"
       >
         {options.map((option) => {
           const selected = option.value === value;

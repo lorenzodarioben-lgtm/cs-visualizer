@@ -85,18 +85,18 @@ export function PathfindingVisualizer() {
   const status = ACTION_STATUS[current.action];
 
   return (
-    <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem]">
-      <div className="grid gap-5">
-        <div className="panel p-5">
+    <section className="grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,1fr)_24rem]">
+      <div className="grid min-w-0 gap-5">
+        <div className="panel min-w-0 p-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div>
+            <div className="min-w-0">
               <p className="control-label">Pathfinding Visualizer</p>
               <h2 className="mt-1 text-2xl font-black heading-strong">Grid search on walls and weights</h2>
             </div>
             <PlaybackControls controller={controller} />
           </div>
 
-          <div className="mt-5 grid gap-4 rounded-2xl surface-muted p-4 lg:grid-cols-4">
+          <div className="mt-5 grid grid-cols-1 gap-4 rounded-2xl surface-muted p-4 sm:grid-cols-2 xl:grid-cols-4">
             <SelectControl
               label="Algorithm"
               value={algorithm}
@@ -128,7 +128,7 @@ export function PathfindingVisualizer() {
           </div>
         </div>
 
-        <div className="panel p-5">
+        <div className="panel min-w-0 p-5">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <Legend
               items={[
@@ -147,12 +147,12 @@ export function PathfindingVisualizer() {
           </div>
 
           <div
-            className="canvas-surface select-none p-2"
+            className="canvas-surface min-w-0 select-none p-2"
             onMouseLeave={() => setPainting(false)}
             onMouseUp={() => setPainting(false)}
           >
             <div
-              className="grid gap-[2px]"
+              className="mx-auto grid w-full max-w-3xl gap-[2px]"
               style={{ gridTemplateColumns: `repeat(${grid.cols}, minmax(0, 1fr))` }}
               role="grid"
               aria-label="Pathfinding grid — click and drag to draw walls"
