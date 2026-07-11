@@ -28,18 +28,18 @@ export function GraphVisualizer() {
   const current = controller.currentStep ?? steps[0];
 
   return (
-    <section className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_24rem]">
-      <div className="grid gap-5">
-        <div className="panel p-5">
+    <section className="grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,1fr)_24rem]">
+      <div className="grid min-w-0 gap-5">
+        <div className="panel min-w-0 p-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div>
+            <div className="min-w-0">
               <p className="control-label">Graph Traversal Visualizer</p>
               <h2 className="mt-1 text-2xl font-black heading-strong">BFS queue vs DFS stack</h2>
             </div>
             <PlaybackControls controller={controller} />
           </div>
 
-          <div className="mt-5 grid gap-4 rounded-2xl surface-muted p-4 md:grid-cols-4">
+          <div className="mt-5 grid grid-cols-1 gap-4 rounded-2xl surface-muted p-4 sm:grid-cols-2 xl:grid-cols-4">
             <SelectControl
               label="Graph"
               value={exampleId}
@@ -69,12 +69,12 @@ export function GraphVisualizer() {
           </div>
         </div>
 
-        <div className="panel p-5">
+        <div className="panel min-w-0 p-5">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
             <Legend items={[{ label: 'Current', className: 'bg-indigo-600' }, { label: 'Frontier', className: 'bg-amber-400' }, { label: 'Visited', className: 'bg-sky-400' }, { label: 'Completed', className: 'bg-emerald-500' }]} />
-            <div className="flex gap-2 text-xs font-semibold">
-              <span className="pill">Frontier: {current.frontier.join(' → ') || 'empty'}</span>
-              <span className="pill">Output: {current.output.join(', ') || 'none'}</span>
+            <div className="flex min-w-0 flex-wrap gap-2 text-xs font-semibold">
+              <span className="pill max-w-full truncate">Frontier: {current.frontier.join(' → ') || 'empty'}</span>
+              <span className="pill max-w-full truncate">Output: {current.output.join(', ') || 'none'}</span>
             </div>
           </div>
           <GraphCanvas graph={graph} step={current} />
@@ -104,7 +104,13 @@ export function GraphVisualizer() {
 function GraphCanvas({ graph, step }: { graph: GraphExample; step: TraversalStep }) {
   const nodesById = Object.fromEntries(graph.nodes.map((node) => [node.id, node]));
   return (
-    <svg viewBox="0 0 520 340" role="img" aria-label="Graph traversal canvas" className="canvas-surface h-[24rem] w-full">
+    <svg
+      viewBox="-12 -12 544 364"
+      preserveAspectRatio="xMidYMid meet"
+      role="img"
+      aria-label="Graph traversal canvas"
+      className="canvas-surface h-64 w-full min-w-0 sm:h-80 xl:h-[24rem]"
+    >
       {graph.edges.map((edge) => {
         const from = nodesById[edge.from];
         const to = nodesById[edge.to];

@@ -18,10 +18,10 @@ export function SelectControl<T extends string>({
   onChange,
 }: SelectControlProps<T>) {
   return (
-    <label className="grid gap-2">
-      <span className="control-label">{label}</span>
+    <label className="grid min-w-0 gap-2">
+      <span className="control-label truncate">{label}</span>
       <select
-        className="control-input"
+        className="control-input w-full min-w-0"
         value={value}
         onChange={(event) => onChange(event.target.value as T)}
       >
