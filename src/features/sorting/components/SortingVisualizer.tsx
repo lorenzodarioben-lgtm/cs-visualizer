@@ -12,7 +12,9 @@ import { useReducedMotion } from '../../../lib/animation/useReducedMotion';
 import { clampNumber, parseNumberList } from '../../../lib/utils/arrays';
 import { generateSortSteps, randomArray } from '../algorithms/sortingAlgorithms';
 import { SORT_INFO } from '../algorithms/sortInfo';
-import type { SortAlgorithm, SortStep } from '../sortingTypes';
+import type { SortAlgorithm, SortHighlights, SortStep } from '../sortingTypes';
+
+const SLIDE_MS = 240;
 
 const algorithms: SortAlgorithm[] = ['bubble', 'selection', 'insertion', 'merge', 'quick'];
 
@@ -142,9 +144,17 @@ export function SortingVisualizer() {
             />
             <StatusBadge tone={ACTION_STATUS[current.action].tone} label={ACTION_STATUS[current.action].label} />
           </div>
-          <div className="canvas-surface flex h-56 items-end gap-0.5 overflow-hidden p-3 sm:h-72 sm:gap-1 sm:p-4 xl:h-[22rem]">
-            {current.array.map((value, index) => (
-              <Bar key={index} step={current} value={value} index={index} maxValue={maxValue} reducedMotion={reducedMotion} />
+          <div className="canvas-surface relative h-56 overflow-hidden p-3 sm:h-72 sm:p-4 xl:h-[22rem]">
+            {current.ids.map((id, index) => (
+              <Bar
+                key={id}
+                value={current.array[index]}
+                index={index}
+                count={current.array.length}
+                maxValue={maxValue}
+                highlights={current.highlights}
+                reducedMotion={reducedMotion}
+              />
             ))}
           </div>
         </div>
@@ -167,8 +177,16 @@ export function SortingVisualizer() {
   );
 }
 
-function Bar({ step, value, index, maxValue, reducedMotion }: { step: SortStep; value: number; index: number; maxValue: number; reducedMotion: boolean }) {
-  const { highlights } = step;
+type BarProps = {
+  value: number;
+  index: number;
+  count: number;
+  maxValue: number;
+  highlights: SortHighlights;
+  reducedMotion: boolean;
+};
+
+function Bar({ value, index, count, maxValue, highlights, reducedMotion }: BarProps) {
   const isSorted = highlights.sorted?.includes(index);
   const isComparing = highlights.comparing?.includes(index);
   const isSwapping = highlights.swapping?.includes(index);
@@ -187,12 +205,21 @@ function Bar({ step, value, index, maxValue, reducedMotion }: { step: SortStep; 
             ? 'bg-sky-500'
             : 'bg-slate-400 dark:bg-slate-500';
 
+  // Each bar owns a full-height column and is placed by its index. When a swap
+  // moves an element to a new index, only `left` changes, so the bar slides
+  // sideways while keeping its own height.
+  const slide = reducedMotion ? undefined : `left ${SLIDE_MS}ms cubic-bezier(0.4, 0, 0.2, 1)`;
+  const grow = reducedMotion ? undefined : `height ${SLIDE_MS}ms ease`;
+
   return (
-    <div className="group relative flex h-full min-w-0 flex-1 items-end justify-center">
+    <div
+      className="group absolute inset-y-0 flex items-end justify-center px-[1px] sm:px-[2px]"
+      style={{ left: `${(index / count) * 100}%`, width: `${100 / count}%`, transition: slide }}
+    >
       <div
-        className={`w-full rounded-t ${color} ${reducedMotion ? '' : 'transition-all duration-200'}`}
-        style={{ height }}
-        title={`Index ${index}: ${value}`}
+        className={`w-full rounded-t ${color}`}
+        style={{ height, transition: grow }}
+        title={`Value ${value}`}
       />
       <span className="pointer-events-none absolute top-1 z-10 hidden rounded bg-slate-900 px-1.5 py-0.5 text-[0.65rem] text-white shadow group-hover:block dark:bg-slate-700">
         {value}
