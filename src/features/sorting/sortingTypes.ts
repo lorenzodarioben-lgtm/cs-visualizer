@@ -24,6 +24,12 @@ export type SortStep = AlgorithmStep & {
   algorithm: SortAlgorithm;
   action: SortAction;
   array: number[];
+  /**
+   * Stable identity of the element occupying each position. Positions that
+   * genuinely swap elements carry their id along, which lets the UI animate a
+   * swap as two bars exchanging places rather than changing height.
+   */
+  ids: number[];
   highlights: SortHighlights;
 };
 

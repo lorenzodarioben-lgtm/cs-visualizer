@@ -6,6 +6,7 @@ function step(
   algorithm: SortAlgorithm,
   action: SortStep['action'],
   array: number[],
+  ids: number[],
   description: string,
   highlights: SortHighlights = {},
   codeLine?: number,
@@ -17,16 +18,23 @@ function step(
     description,
     codeLine,
     array: [...array],
+    ids: [...ids],
     highlights,
   };
 }
 
-function finish(algorithm: SortAlgorithm, steps: SortStep[], array: number[]): SortStep[] {
+/** Position identities for an array of length n: [0, 1, ..., n - 1]. */
+function identity(length: number): number[] {
+  return Array.from({ length }, (_, index) => index);
+}
+
+function finish(algorithm: SortAlgorithm, steps: SortStep[], array: number[], ids: number[]): SortStep[] {
   steps.push(
     step(
       algorithm,
       'complete',
       array,
+      ids,
       array.length === 0 ? 'The array is empty, so it is already sorted.' : 'Sorting complete. Every value is now in ascending order.',
       { sorted: array.map((_, index) => index) },
     ),
@@ -61,7 +69,8 @@ export function randomArray(size: number, min = 5, max = 100): number[] {
 function bubbleSortSteps(input: number[]): SortStep[] {
   const algorithm = 'bubble' as const;
   const array = [...input];
-  const steps: SortStep[] = [step(algorithm, 'initial', array, 'Start with the original array.')];
+  const ids = identity(array.length);
+  const steps: SortStep[] = [step(algorithm, 'initial', array, ids, 'Start with the original array.')];
   const sorted = new Set<number>();
 
   for (let end = array.length - 1; end > 0; end -= 1) {
@@ -72,6 +81,7 @@ function bubbleSortSteps(input: number[]): SortStep[] {
           algorithm,
           'compare',
           array,
+          ids,
           `Compare ${array[i]} and ${array[i + 1]}.`,
           { comparing: [i, i + 1], sorted: [...sorted] },
           4,
@@ -79,13 +89,15 @@ function bubbleSortSteps(input: number[]): SortStep[] {
       );
       if (array[i] > array[i + 1]) {
         swap(array, i, i + 1);
+        swap(ids, i, i + 1);
         swapped = true;
         steps.push(
           step(
             algorithm,
             'swap',
             array,
-            `Swap them because ${array[i + 1]} was greater than ${array[i]}.`,
+            ids,
+            `Swap them because ${array[i]} is now smaller than ${array[i + 1]}.`,
             { swapping: [i, i + 1], sorted: [...sorted] },
             5,
           ),
@@ -93,28 +105,30 @@ function bubbleSortSteps(input: number[]): SortStep[] {
       }
     }
     sorted.add(end);
-    steps.push(step(algorithm, 'mark-sorted', array, `Index ${end} is fixed in its final sorted position.`, { sorted: [...sorted] }, 1));
+    steps.push(step(algorithm, 'mark-sorted', array, ids, `Index ${end} is fixed in its final sorted position.`, { sorted: [...sorted] }, 1));
     if (!swapped) break;
   }
   if (array.length > 0) sorted.add(0);
-  return finish(algorithm, steps, array);
+  return finish(algorithm, steps, array, ids);
 }
 
 function selectionSortSteps(input: number[]): SortStep[] {
   const algorithm = 'selection' as const;
   const array = [...input];
-  const steps: SortStep[] = [step(algorithm, 'initial', array, 'Start with the unsorted array.')];
+  const ids = identity(array.length);
+  const steps: SortStep[] = [step(algorithm, 'initial', array, ids, 'Start with the unsorted array.')];
   const sorted = new Set<number>();
 
   for (let i = 0; i < array.length; i += 1) {
     let minIndex = i;
-    steps.push(step(algorithm, 'compare', array, `Assume index ${i} holds the smallest unsorted value.`, { comparing: [i], sorted: [...sorted] }, 2));
+    steps.push(step(algorithm, 'compare', array, ids, `Assume index ${i} holds the smallest unsorted value.`, { comparing: [i], sorted: [...sorted] }, 2));
     for (let j = i + 1; j < array.length; j += 1) {
       steps.push(
         step(
           algorithm,
           'compare',
           array,
+          ids,
           `Compare current minimum ${array[minIndex]} with ${array[j]}.`,
           { comparing: [minIndex, j], sorted: [...sorted], activeRange: [i, array.length - 1] },
           4,
@@ -122,45 +136,50 @@ function selectionSortSteps(input: number[]): SortStep[] {
       );
       if (array[j] < array[minIndex]) {
         minIndex = j;
-        steps.push(step(algorithm, 'compare', array, `New minimum found at index ${minIndex}.`, { comparing: [minIndex], sorted: [...sorted] }, 5));
+        steps.push(step(algorithm, 'compare', array, ids, `New minimum found at index ${minIndex}.`, { comparing: [minIndex], sorted: [...sorted] }, 5));
       }
     }
     if (minIndex !== i) {
       swap(array, i, minIndex);
-      steps.push(step(algorithm, 'swap', array, `Swap the minimum value into index ${i}.`, { swapping: [i, minIndex], sorted: [...sorted] }, 6));
+      swap(ids, i, minIndex);
+      steps.push(step(algorithm, 'swap', array, ids, `Swap the minimum value into index ${i}.`, { swapping: [i, minIndex], sorted: [...sorted] }, 6));
     }
     sorted.add(i);
-    steps.push(step(algorithm, 'mark-sorted', array, `Index ${i} joins the sorted prefix.`, { sorted: [...sorted] }, 1));
+    steps.push(step(algorithm, 'mark-sorted', array, ids, `Index ${i} joins the sorted prefix.`, { sorted: [...sorted] }, 1));
   }
-  return finish(algorithm, steps, array);
+  return finish(algorithm, steps, array, ids);
 }
 
 function insertionSortSteps(input: number[]): SortStep[] {
   const algorithm = 'insertion' as const;
   const array = [...input];
-  const steps: SortStep[] = [step(algorithm, 'initial', array, 'Treat the first value as a sorted prefix.', { sorted: array.length ? [0] : [] })];
+  const ids = identity(array.length);
+  const steps: SortStep[] = [step(algorithm, 'initial', array, ids, 'Treat the first value as a sorted prefix.', { sorted: array.length ? [0] : [] })];
 
   for (let i = 1; i < array.length; i += 1) {
-    const key = array[i];
-    let j = i - 1;
-    steps.push(step(algorithm, 'compare', array, `Pick ${key} and insert it into the sorted prefix.`, { comparing: [i], activeRange: [0, i] }, 2));
-    while (j >= 0 && array[j] > key) {
-      steps.push(step(algorithm, 'compare', array, `${array[j]} is greater than ${key}, so shift it right.`, { comparing: [j, j + 1], activeRange: [0, i] }, 4));
-      array[j + 1] = array[j];
-      steps.push(step(algorithm, 'overwrite', array, `Shift ${array[j]} from index ${j} to index ${j + 1}.`, { swapping: [j, j + 1], activeRange: [0, i] }, 5));
+    steps.push(step(algorithm, 'compare', array, ids, `Pick ${array[i]} and walk it back into the sorted prefix.`, { comparing: [i], activeRange: [0, i] }, 2));
+    let j = i;
+    while (j > 0 && array[j - 1] > array[j]) {
+      steps.push(step(algorithm, 'compare', array, ids, `${array[j - 1]} is greater than ${array[j]}, so swap them.`, { comparing: [j - 1, j], activeRange: [0, i] }, 3));
+      swap(array, j - 1, j);
+      swap(ids, j - 1, j);
+      steps.push(step(algorithm, 'swap', array, ids, `Move ${array[j - 1]} left toward its sorted place.`, { swapping: [j - 1, j], activeRange: [0, i] }, 4));
       j -= 1;
     }
-    array[j + 1] = key;
-    steps.push(step(algorithm, 'overwrite', array, `Place ${key} at index ${j + 1}.`, { comparing: [j + 1], sorted: Array.from({ length: i + 1 }, (_, index) => index) }, 7));
+    steps.push(step(algorithm, 'mark-sorted', array, ids, `The value settles at index ${j}.`, { sorted: Array.from({ length: i + 1 }, (_, index) => index) }, 1));
   }
 
-  return finish(algorithm, steps, array);
+  return finish(algorithm, steps, array, ids);
 }
 
 function mergeSortSteps(input: number[]): SortStep[] {
   const algorithm = 'merge' as const;
   const array = [...input];
-  const steps: SortStep[] = [step(algorithm, 'initial', array, 'Start merge sort on the full array.')];
+  // Merge is copy-based rather than swap-based, so identities stay pinned to
+  // positions: a merge writes a value into a slot, which the UI shows as the
+  // bar at that slot changing height.
+  const ids = identity(array.length);
+  const steps: SortStep[] = [step(algorithm, 'initial', array, ids, 'Start merge sort on the full array.')];
 
   function merge(left: number, mid: number, right: number): void {
     const leftValues = array.slice(left, mid + 1);
@@ -169,7 +188,7 @@ function mergeSortSteps(input: number[]): SortStep[] {
     let j = 0;
     let k = left;
 
-    steps.push(step(algorithm, 'partition', array, `Merge sorted ranges [${left}, ${mid}] and [${mid + 1}, ${right}].`, { activeRange: [left, right] }, 6));
+    steps.push(step(algorithm, 'partition', array, ids, `Merge sorted ranges [${left}, ${mid}] and [${mid + 1}, ${right}].`, { activeRange: [left, right] }, 6));
 
     while (i < leftValues.length && j < rightValues.length) {
       const takeLeft = leftValues[i] <= rightValues[j];
@@ -178,25 +197,26 @@ function mergeSortSteps(input: number[]): SortStep[] {
           algorithm,
           'compare',
           array,
+          ids,
           `Compare ${leftValues[i]} and ${rightValues[j]}; take ${takeLeft ? leftValues[i] : rightValues[j]}.`,
           { comparing: [left + i, mid + 1 + j], activeRange: [left, right] },
           6,
         ),
       );
       array[k] = takeLeft ? leftValues[i++] : rightValues[j++];
-      steps.push(step(algorithm, 'overwrite', array, `Write ${array[k]} into index ${k}.`, { comparing: [k], activeRange: [left, right] }, 6));
+      steps.push(step(algorithm, 'overwrite', array, ids, `Write ${array[k]} into index ${k}.`, { swapping: [k], activeRange: [left, right] }, 6));
       k += 1;
     }
 
     while (i < leftValues.length) {
       array[k] = leftValues[i++];
-      steps.push(step(algorithm, 'overwrite', array, `Copy remaining left value ${array[k]} into index ${k}.`, { comparing: [k], activeRange: [left, right] }, 6));
+      steps.push(step(algorithm, 'overwrite', array, ids, `Copy remaining left value ${array[k]} into index ${k}.`, { swapping: [k], activeRange: [left, right] }, 6));
       k += 1;
     }
 
     while (j < rightValues.length) {
       array[k] = rightValues[j++];
-      steps.push(step(algorithm, 'overwrite', array, `Copy remaining right value ${array[k]} into index ${k}.`, { comparing: [k], activeRange: [left, right] }, 6));
+      steps.push(step(algorithm, 'overwrite', array, ids, `Copy remaining right value ${array[k]} into index ${k}.`, { swapping: [k], activeRange: [left, right] }, 6));
       k += 1;
     }
   }
@@ -204,40 +224,43 @@ function mergeSortSteps(input: number[]): SortStep[] {
   function sort(left: number, right: number): void {
     if (left >= right) return;
     const mid = Math.floor((left + right) / 2);
-    steps.push(step(algorithm, 'partition', array, `Split range [${left}, ${right}] at ${mid}.`, { activeRange: [left, right] }, 3));
+    steps.push(step(algorithm, 'partition', array, ids, `Split range [${left}, ${right}] at ${mid}.`, { activeRange: [left, right] }, 3));
     sort(left, mid);
     sort(mid + 1, right);
     merge(left, mid, right);
   }
 
   sort(0, array.length - 1);
-  return finish(algorithm, steps, array);
+  return finish(algorithm, steps, array, ids);
 }
 
 function quickSortSteps(input: number[]): SortStep[] {
   const algorithm = 'quick' as const;
   const array = [...input];
-  const steps: SortStep[] = [step(algorithm, 'initial', array, 'Start quick sort on the full array.')];
+  const ids = identity(array.length);
+  const steps: SortStep[] = [step(algorithm, 'initial', array, ids, 'Start quick sort on the full array.')];
   const sorted = new Set<number>();
 
   function partition(low: number, high: number): number {
     const pivot = array[high];
     let i = low;
-    steps.push(step(algorithm, 'pivot', array, `Choose ${pivot} at index ${high} as the pivot.`, { pivot: high, activeRange: [low, high], sorted: [...sorted] }, 3));
+    steps.push(step(algorithm, 'pivot', array, ids, `Choose ${pivot} at index ${high} as the pivot.`, { pivot: high, activeRange: [low, high], sorted: [...sorted] }, 3));
 
     for (let j = low; j < high; j += 1) {
-      steps.push(step(algorithm, 'compare', array, `Compare ${array[j]} with pivot ${pivot}.`, { comparing: [j, high], pivot: high, activeRange: [low, high], sorted: [...sorted] }, 4));
+      steps.push(step(algorithm, 'compare', array, ids, `Compare ${array[j]} with pivot ${pivot}.`, { comparing: [j, high], pivot: high, activeRange: [low, high], sorted: [...sorted] }, 4));
       if (array[j] <= pivot) {
         if (i !== j) {
           swap(array, i, j);
-          steps.push(step(algorithm, 'swap', array, `Move ${array[i]} into the <= pivot region.`, { swapping: [i, j], pivot: high, activeRange: [low, high], sorted: [...sorted] }, 4));
+          swap(ids, i, j);
+          steps.push(step(algorithm, 'swap', array, ids, `Move ${array[i]} into the <= pivot region.`, { swapping: [i, j], pivot: high, activeRange: [low, high], sorted: [...sorted] }, 4));
         }
         i += 1;
       }
     }
 
     swap(array, i, high);
-    steps.push(step(algorithm, 'swap', array, `Place pivot ${pivot} into final index ${i}.`, { swapping: [i, high], pivot: i, activeRange: [low, high], sorted: [...sorted] }, 5));
+    swap(ids, i, high);
+    steps.push(step(algorithm, 'swap', array, ids, `Place pivot ${pivot} into final index ${i}.`, { swapping: [i, high], pivot: i, activeRange: [low, high], sorted: [...sorted] }, 5));
     sorted.add(i);
     return i;
   }
@@ -246,7 +269,7 @@ function quickSortSteps(input: number[]): SortStep[] {
     if (low > high) return;
     if (low === high) {
       sorted.add(low);
-      steps.push(step(algorithm, 'mark-sorted', array, `Single-item range at index ${low} is already sorted.`, { sorted: [...sorted] }, 2));
+      steps.push(step(algorithm, 'mark-sorted', array, ids, `Single-item range at index ${low} is already sorted.`, { sorted: [...sorted] }, 2));
       return;
     }
     const pivotIndex = partition(low, high);
@@ -255,5 +278,5 @@ function quickSortSteps(input: number[]): SortStep[] {
   }
 
   sort(0, array.length - 1);
-  return finish(algorithm, steps, array);
+  return finish(algorithm, steps, array, ids);
 }
