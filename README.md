@@ -8,7 +8,7 @@ Watch real state transitions unfold step by step — with deterministic playback
 ![CI](https://github.com/lorenzodarioben-lgtm/cs-visualizer/actions/workflows/ci.yml/badge.svg)
 ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)
 ![React](https://img.shields.io/badge/React-19-149eca)
-![Tests](https://img.shields.io/badge/tests-92%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-121%20passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 </div>
@@ -29,7 +29,7 @@ It doubles as a portfolio piece: a clean feature-sliced architecture, a small re
 
 | Visualizer | What you can explore |
 | --- | --- |
-| **Sorting** | Bubble, Selection, Insertion, Merge, Quick — with comparisons, swaps, pivots, sorted regions, and a custom-array editor. |
+| **Sorting** | Bubble, Selection, Insertion, Merge, Quick — with comparisons, sorted regions, a custom-array editor, and swaps animated as bars sliding to exchange positions. |
 | **Graph traversal** | BFS vs DFS on predefined graphs, showing the frontier queue/stack, visited/completed nodes, and output order. |
 | **Pathfinding**  | Grid-based **BFS, Dijkstra, and A\*** with a wall/weight brush — draw a maze and compare how each algorithm explores it. |
 | **Heap** | Min-heap insert / extract-min / peek / heapify as both a tree and a backing array, with bubble-up/down highlighting. |
@@ -120,9 +120,10 @@ See [docs/architecture.md](docs/architecture.md) for a deeper tour.
 
 ## Testing
 
-92 tests across 11 files cover:
+121 tests across 14 files cover:
 
 - Sorting correctness and edge cases for all five algorithms.
+- Sorting element-identity invariants that back the positional swap animation.
 - BFS/DFS traversal order, disconnected graphs, and missing start nodes.
 - Pathfinding shortest paths for BFS/Dijkstra/A\*, no-path and weighted-detour cases.
 - Min-heap and linked-list operations, including edge cases.
