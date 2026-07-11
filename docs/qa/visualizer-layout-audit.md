@@ -59,10 +59,45 @@ their intrinsic width overflows the track to the right.
 
 ## Per-visualizer checklist
 
-- [ ] Sorting — bars visible on load; controls not cramped; all 5 algorithms.
-- [ ] Graph — traversal/start-node controls separated; canvas keeps usable height.
-- [ ] Pathfinding — algorithm + speed controls coexist; grid stays square/visible.
-- [ ] Heap — explanation not overlapping the console; tree + array not clipped.
-- [ ] Linked list — nodes/arrows not clipped; horizontal scroll only when needed.
-- [ ] State machine — states/arrows within bounds; long labels wrap.
-- [ ] No unintended horizontal page overflow at any tested width.
+- [x] Sorting — bars visible on load; controls not cramped; all 5 algorithms.
+- [x] Graph — traversal/start-node controls separated; canvas keeps usable height.
+- [x] Pathfinding — algorithm + speed controls coexist; grid stays square/visible.
+- [x] Heap — explanation not overlapping the console; tree + array not clipped.
+- [x] Linked list — nodes/arrows not clipped; horizontal scroll only when needed.
+- [x] State machine — states/arrows within bounds; long labels wrap.
+- [x] No unintended horizontal page overflow at any tested width.
+
+## Verification results
+
+Re-measured in-browser after the fixes. Values are computed geometry, not
+screenshots (the sorting-height bug is invisible to a screenshot assertion, so
+it is also covered by unit tests in `SortingVisualizer.test.tsx`).
+
+**Sorting bars** — now render on first load: 18 bars, heights 25–318px inside a
+352px canvas (was 0px). Bars persist across algorithm, size, speed, and step
+changes.
+
+**Layout sweep** — for every visualizer at 1536 / 1440 / 1280 / 1024 / 768 /
+390px: no horizontal page overflow and no content spilling out of its column
+(overlap = 0px). The explanation panel sits beside the visualizer at 1536 and
+stacks below it at 1440 and narrower, so the centre column is never squeezed.
+Content that is legitimately wider than its box (a deep heap tree, a long linked
+list) scrolls inside an `overflow-x-auto` container instead of overlapping
+neighbours.
+
+**Heap** — renders as a valid heap in both min and max modes; a 15-node heap
+scrolls its tree horizontally with no page overflow.
+
+**Console** — no React, SVG, ResizeObserver, or key warnings at any width.
+
+## Root-cause fixes (summary)
+
+| Issue | Fix |
+| --- | --- |
+| Sorting bars 0px | `h-full` on the bar column so percentage heights resolve |
+| Panels overflow track | `min-width: 0` on section/column/panel/header + shared `viz-*` classes |
+| Explanation squeeze/overlap | split moved to `2xl`; stacks below at laptop widths |
+| Cramped control trays | responsive `1 → 2 → 4` column grids; label/badge `min-w-0` + truncate |
+| Graph node clipping | padded viewBox + `preserveAspectRatio` |
+| Heap tree/list clipping | `overflow-x-auto` scroll containers |
+| State nodes overflow | diagram stacks (`flex-col → sm:flex-row`) |
