@@ -198,11 +198,17 @@ type BarProps = {
 };
 
 function Bar({ value, index, count, maxValue, highlights, durationMs, reducedMotion }: BarProps) {
+  const swapping = highlights.swapping ?? [];
   const isSorted = highlights.sorted?.includes(index);
   const isComparing = highlights.comparing?.includes(index);
-  const isSwapping = highlights.swapping?.includes(index);
+  const isSwapping = swapping.includes(index);
   const isPivot = highlights.pivot === index;
   const isActive = highlights.activeRange ? index >= highlights.activeRange[0] && index <= highlights.activeRange[1] : false;
+  // When two elements swap, lift the one arriving from the left a little higher
+  // and place it on top so the two bars pass around each other cleanly instead
+  // of appearing to merge.
+  const isPositionalSwap = isSwapping && swapping.length > 1;
+  const isLeadSwapper = isPositionalSwap && index === Math.min(...swapping);
   const height = `${Math.max(8, (value / maxValue) * 100)}%`;
   const color = isSorted
     ? 'bg-emerald-500'
@@ -216,20 +222,35 @@ function Bar({ value, index, count, maxValue, highlights, durationMs, reducedMot
             ? 'bg-sky-500'
             : 'bg-slate-400 dark:bg-slate-500';
 
-  // Each bar owns a full-height column and is placed by its index. When a swap
-  // moves an element to a new index, only `left` changes, so the bar slides
-  // sideways while keeping its own height.
+  // Each bar owns a full-height column placed by its index. A swap changes only
+  // `left`, so the bar slides sideways while keeping its own height.
   const slide = reducedMotion ? undefined : `left ${durationMs}ms cubic-bezier(0.4, 0, 0.2, 1)`;
+  const lift = reducedMotion ? undefined : `transform ${durationMs}ms cubic-bezier(0.4, 0, 0.2, 1)`;
   const grow = reducedMotion ? undefined : `height ${durationMs}ms ease`;
+  const barTransform = isLeadSwapper
+    ? 'translateY(-0.85rem) scale(1.04)'
+    : isPositionalSwap
+      ? 'translateY(-0.3rem) scale(1.02)'
+      : undefined;
 
   return (
     <div
       className="group absolute inset-y-0 flex items-end justify-center px-[1px] sm:px-[2px]"
-      style={{ left: `${(index / count) * 100}%`, width: `${100 / count}%`, transition: slide }}
+      style={{
+        left: `${(index / count) * 100}%`,
+        width: `${100 / count}%`,
+        transition: slide,
+        zIndex: isLeadSwapper ? 30 : isSwapping ? 20 : undefined,
+      }}
     >
       <div
-        className={`w-full rounded-t ${color}`}
-        style={{ height, transition: grow }}
+        className={`w-full rounded-t ${color} ${isPositionalSwap ? 'shadow-lg ring-2 ring-rose-300/70 dark:ring-rose-400/50' : ''}`}
+        style={{
+          height,
+          transform: barTransform,
+          transformOrigin: 'bottom',
+          transition: [grow, lift].filter(Boolean).join(', ') || undefined,
+        }}
         title={`Value ${value}`}
       />
       <span className="pointer-events-none absolute top-1 z-10 hidden rounded bg-slate-900 px-1.5 py-0.5 text-[0.65rem] text-white shadow group-hover:block dark:bg-slate-700">
