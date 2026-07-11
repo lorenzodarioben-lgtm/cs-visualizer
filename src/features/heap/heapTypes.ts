@@ -1,5 +1,7 @@
 import type { AlgorithmStep } from '../../lib/animation/step';
 
+export type HeapOrder = 'min' | 'max';
+
 export type HeapAction = 'initial' | 'compare' | 'swap' | 'insert' | 'extract' | 'peek' | 'heapify' | 'complete' | 'empty';
 
 export type HeapStep = AlgorithmStep & {
