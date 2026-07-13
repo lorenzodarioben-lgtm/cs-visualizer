@@ -57,26 +57,30 @@ export function AppShell({ active, onChange, theme, onToggleTheme, children }: A
                     type="button"
                     aria-current={isActive ? 'page' : undefined}
                     onClick={() => onChange(item.key)}
-                    className={`focus-ring group flex items-start gap-3 rounded-2xl border p-3 text-left transition ${
+                    className={`focus-ring group relative flex items-center gap-3 overflow-hidden rounded-lg px-2.5 py-2 text-left transition-colors ${
                       isActive
-                        ? 'border-indigo-500/40 bg-indigo-600 text-white shadow-lg shadow-indigo-500/25'
-                        : 'border-transparent text-slate-700 hover:border-slate-200 hover:bg-slate-100 dark:text-slate-300 dark:hover:border-white/10 dark:hover:bg-slate-800'
+                        ? 'bg-indigo-50 text-indigo-950 dark:bg-indigo-500/10 dark:text-white'
+                        : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800/70'
                     }`}
                   >
                     <span
-                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition ${
+                      aria-hidden="true"
+                      className={`absolute inset-y-1.5 left-0 w-1 rounded-full bg-indigo-500 transition-opacity ${isActive ? 'opacity-100' : 'opacity-0'}`}
+                    />
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors ${
                         isActive
-                          ? 'bg-white/20 text-white'
-                          : 'bg-slate-100 text-indigo-600 group-hover:bg-white dark:bg-slate-800 dark:text-indigo-300 dark:group-hover:bg-slate-700'
+                          ? 'bg-indigo-600 text-white'
+                          : 'bg-slate-100 text-slate-500 group-hover:text-indigo-600 dark:bg-slate-800 dark:text-slate-400 dark:group-hover:text-indigo-300'
                       }`}
                     >
                       {item.icon}
                     </span>
                     <span className="min-w-0">
-                      <span className="block text-sm font-bold">{item.label}</span>
+                      <span className="block text-sm font-semibold leading-tight">{item.label}</span>
                       <span
                         className={`mt-0.5 block text-xs leading-4 ${
-                          isActive ? 'text-indigo-100' : 'text-slate-500 dark:text-slate-400'
+                          isActive ? 'text-indigo-700/80 dark:text-indigo-200/70' : 'text-slate-400 dark:text-slate-500'
                         }`}
                       >
                         {item.description}
