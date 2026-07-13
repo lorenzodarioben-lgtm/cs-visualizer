@@ -87,20 +87,28 @@ export function HeapVisualizer() {
           </div>
 
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_16rem]">
-            <div className="canvas-surface min-w-0 overflow-x-auto p-5">
-              <div className="grid min-w-max gap-5">
-                {levels.map((level, levelIndex) => (
-                  <div className="flex justify-center gap-3 sm:gap-4" key={levelIndex}>
-                    {level.map(({ value: nodeValue, index }) => <HeapNode key={index} value={nodeValue} index={index} step={current} />)}
-                  </div>
-                ))}
-              </div>
+            <div className="canvas-surface flex min-h-[12rem] min-w-0 items-center justify-center overflow-x-auto p-5">
+              {displayHeap.length === 0 ? (
+                <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">The heap is empty — insert a value or heapify an array.</p>
+              ) : (
+                <div className="grid min-w-max gap-5">
+                  {levels.map((level, levelIndex) => (
+                    <div className="flex justify-center gap-3 sm:gap-4" key={levelIndex}>
+                      {level.map(({ value: nodeValue, index }) => <HeapNode key={index} value={nodeValue} index={index} step={current} />)}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="viz-card min-w-0">
               <p className="control-label mb-3">Backing array</p>
-              <div className="grid grid-cols-4 gap-2">
-                {displayHeap.map((item, index) => <HeapArrayCell key={`${item}-${index}`} value={item} index={index} step={current} />)}
-              </div>
+              {displayHeap.length === 0 ? (
+                <p className="text-sm text-slate-500 dark:text-slate-400">Empty</p>
+              ) : (
+                <div className="grid grid-cols-4 gap-2">
+                  {displayHeap.map((item, index) => <HeapArrayCell key={`${item}-${index}`} value={item} index={index} step={current} />)}
+                </div>
+              )}
             </div>
           </div>
         </div>
