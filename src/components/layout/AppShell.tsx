@@ -92,9 +92,7 @@ export function AppShell({ active, onChange, theme, onToggleTheme, children }: A
             </div>
           </nav>
 
-          <main key={active} className="animate-fade-in">
-            {children}
-          </main>
+          <main key={active}>{children}</main>
         </div>
       </div>
     </div>
