@@ -9,10 +9,13 @@ type LegendProps = {
 
 export function Legend({ items }: LegendProps) {
   return (
-    <ul className="flex flex-wrap gap-2 text-xs font-medium text-slate-600 dark:text-slate-300">
+    <ul className="flex flex-wrap gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-300">
       {items.map((item) => (
-        <li className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1 shadow-sm dark:bg-slate-800" key={item.label}>
-          <span aria-hidden="true" className={`h-2.5 w-2.5 rounded-full ring-1 ring-black/5 dark:ring-white/10 ${item.className}`} />
+        <li
+          className="inline-flex items-center gap-1.5 rounded-md border border-slate-200/70 bg-white/70 px-2 py-1 dark:border-slate-800 dark:bg-slate-800/50"
+          key={item.label}
+        >
+          <span aria-hidden="true" className={`h-2 w-2 rounded-[3px] ring-1 ring-black/5 dark:ring-white/10 ${item.className}`} />
           {item.label}
         </li>
       ))}
