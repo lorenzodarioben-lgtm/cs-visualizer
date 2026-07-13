@@ -69,4 +69,16 @@ describe('SortingVisualizer rendering', () => {
     expect(Number(current)).toBeLessThanOrEqual(Number(total));
     expect(Number(total)).toBeGreaterThan(1);
   });
+
+  it('exposes the bar chart to assistive tech', () => {
+    render(<SortingVisualizer />);
+    expect(screen.getByRole('img', { name: /bar chart/i })).toBeInTheDocument();
+  });
+
+  it('describes the custom-array input with its hint text', () => {
+    render(<SortingVisualizer />);
+    const input = screen.getByLabelText(/custom array values/i);
+    expect(input).toHaveAttribute('aria-describedby', 'custom-array-hint');
+    expect(document.getElementById('custom-array-hint')).toHaveTextContent(/clamped to 1/i);
+  });
 });
