@@ -55,7 +55,7 @@ export function PlaybackControls<T>({ controller }: PlaybackControlsProps<T>) {
           <Repeat size={14} weight="bold" /> Loop
         </ControlButton>
         <span className="pill ml-auto">
-          {stepNumber} / {totalSteps}
+          Step {stepNumber} / {totalSteps}
         </span>
       </div>
       <label className="flex items-center">
