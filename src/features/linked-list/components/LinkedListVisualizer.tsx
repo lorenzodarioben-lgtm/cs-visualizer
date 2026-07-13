@@ -74,7 +74,11 @@ export function LinkedListVisualizer() {
             <span className="pill">Length: {current.list.length}</span>
             {current.warning && <span className="rounded-full bg-rose-100 px-3 py-1 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300">{current.warning}</span>}
           </div>
-          <div className="canvas-surface flex min-h-[14rem] items-center gap-0 overflow-x-auto px-5 py-10">
+          <div
+            role="img"
+            aria-label={`Singly linked list with ${current.list.length} node${current.list.length === 1 ? '' : 's'}`}
+            className="canvas-surface flex min-h-[14rem] items-center gap-0 overflow-x-auto px-5 py-10"
+          >
             {current.list.length === 0 ? (
               <div className="w-full text-center text-sm font-semibold text-slate-500 dark:text-slate-400">Empty list</div>
             ) : (

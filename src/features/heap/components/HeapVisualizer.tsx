@@ -87,7 +87,11 @@ export function HeapVisualizer() {
           </div>
 
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_16rem]">
-            <div className="canvas-surface flex min-h-[12rem] min-w-0 items-center justify-center overflow-x-auto p-5">
+            <div
+              role="img"
+              aria-label={`${order === 'min' ? 'Min' : 'Max'}-heap binary tree with ${displayHeap.length} nodes`}
+              className="canvas-surface flex min-h-[12rem] min-w-0 items-center justify-center overflow-x-auto p-5"
+            >
               {displayHeap.length === 0 ? (
                 <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">The heap is empty — insert a value or heapify an array.</p>
               ) : (

@@ -153,7 +153,11 @@ export function SortingVisualizer() {
             />
             <StatusBadge tone={ACTION_STATUS[current.action].tone} label={ACTION_STATUS[current.action].label} />
           </div>
-          <div className="canvas-surface relative h-56 overflow-hidden p-3 sm:h-72 sm:p-4 xl:h-[22rem]">
+          <div
+            role="img"
+            aria-label={`${info.label} bar chart of ${current.array.length} values, step ${controller.currentStepIndex + 1} of ${controller.totalSteps}`}
+            className="canvas-surface relative h-56 overflow-hidden p-3 sm:h-72 sm:p-4 xl:h-[22rem]"
+          >
             {current.ids.map((id, index) => (
               <Bar
                 key={id}
