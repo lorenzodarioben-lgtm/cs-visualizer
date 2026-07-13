@@ -22,7 +22,10 @@ export function ExplanationPanel({ content, children }: ExplanationPanelProps) {
         <p className="control-label">Explanation</p>
         <h2 className="mt-1 text-xl font-bold heading-strong">{content.title}</h2>
       </div>
-      <div className="rounded-2xl border border-indigo-100 bg-indigo-50 p-4 dark:border-indigo-500/20 dark:bg-indigo-500/10">
+      <div
+        aria-live="polite"
+        className="rounded-2xl border border-indigo-100 bg-indigo-50 p-4 dark:border-indigo-500/20 dark:bg-indigo-500/10"
+      >
         <p className="text-sm font-semibold text-indigo-950 dark:text-indigo-200">Current step</p>
         <p className="mt-1 text-sm leading-6 text-indigo-900 dark:text-indigo-100">{content.currentStep}</p>
       </div>
