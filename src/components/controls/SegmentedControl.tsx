@@ -25,7 +25,7 @@ export function SegmentedControl<T extends string>({
       <div
         role="radiogroup"
         aria-label={ariaLabel ?? label}
-        className="flex min-w-0 gap-1 rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-800"
+        className="flex min-w-0 gap-0.5 rounded-lg border border-slate-300/70 bg-slate-100/80 p-0.5 dark:border-slate-700 dark:bg-slate-800/60"
       >
         {options.map((option) => {
           const selected = option.value === value;
@@ -36,10 +36,10 @@ export function SegmentedControl<T extends string>({
               role="radio"
               aria-checked={selected}
               onClick={() => onChange(option.value)}
-              className={`focus-ring flex-1 rounded-lg px-2 py-1.5 text-xs font-bold capitalize transition duration-150 active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 ${
+              className={`focus-ring flex-1 rounded-[0.3rem] px-2 py-1.5 text-xs font-bold capitalize transition duration-150 active:scale-[0.97] motion-reduce:transition-none motion-reduce:active:scale-100 ${
                 selected
-                  ? 'bg-indigo-600 text-white shadow-sm'
-                  : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700'
+                  ? 'bg-white text-indigo-700 shadow-sm ring-1 ring-slate-200 dark:bg-slate-950 dark:text-indigo-300 dark:ring-slate-700'
+                  : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
               }`}
             >
               {option.label}
