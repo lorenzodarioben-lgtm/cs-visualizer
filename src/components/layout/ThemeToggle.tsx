@@ -14,7 +14,7 @@ export function ThemeToggle({ theme, onToggle }: ThemeToggleProps) {
       aria-pressed={isDark}
       aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
       title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
-      className="focus-ring group inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white/70 text-slate-600 transition duration-150 hover:bg-slate-100 hover:text-slate-900 active:scale-95 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-700/60 dark:hover:text-white"
+      className="focus-ring group inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white/70 text-slate-600 transition duration-150 hover:bg-slate-100 hover:text-slate-900 active:scale-95 motion-reduce:transition-none motion-reduce:active:scale-100 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-700/60 dark:hover:text-white"
     >
       <span className="transition-transform duration-300 group-hover:rotate-12">
         {isDark ? <SunIcon /> : <MoonIcon />}
