@@ -79,7 +79,7 @@ export function AppShell({ active, onChange, theme, onToggleTheme, children }: A
                     <span className="min-w-0">
                       <span className="block text-sm font-semibold leading-tight">{item.label}</span>
                       <span
-                        className={`mt-0.5 block text-xs leading-4 ${
+                        className={`mt-0.5 hidden text-xs leading-4 sm:block ${
                           isActive ? 'text-indigo-700/80 dark:text-indigo-200/70' : 'text-slate-400 dark:text-slate-500'
                         }`}
                       >
