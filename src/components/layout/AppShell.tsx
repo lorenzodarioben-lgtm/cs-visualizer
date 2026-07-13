@@ -13,54 +13,39 @@ type AppShellProps = {
 
 export function AppShell({ active, onChange, theme, onToggleTheme, children }: AppShellProps) {
   return (
-    <div className="min-h-screen px-4 py-5 sm:px-6 lg:px-8">
+    <div className="min-h-[100dvh] px-4 py-4 sm:px-6 sm:py-5 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <header className="panel relative mb-6 overflow-hidden rounded-[2rem] p-6 sm:p-8">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-indigo-500/20 blur-3xl"
-          />
-          <div className="relative flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-            <div className="max-w-2xl">
-              <div className="flex items-center gap-3">
-                <BrandMark />
-                <div>
-                  <p className="control-label">Portfolio project</p>
-                  <h1 className="text-3xl font-black leading-none tracking-tight heading-strong sm:text-4xl">
-                    CS Visualizer
-                  </h1>
-                </div>
-              </div>
-              <p className="mt-4 text-sm leading-6 text-body sm:text-base">
-                An interactive playground for data structures and algorithms. Watch real state
-                transitions unfold step by step, with deterministic playback, live explanations,
-                and pseudocode you can follow along.
-              </p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                <StatChip value="6" label="visualizers" />
-                <StatChip value="12+" label="algorithms" />
-                <StatChip value="TypeScript" label="fully typed" />
-                <StatChip value="tested" label="pure logic" />
-              </div>
+        <header className="panel mb-4 flex flex-col gap-4 rounded-2xl px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <div className="flex items-center gap-3.5">
+            <BrandMark />
+            <div className="min-w-0">
+              <h1 className="text-xl font-bold leading-tight heading-strong sm:text-[1.7rem]">CS Visualizer</h1>
+              <p className="control-label mt-0.5">Data structures and algorithms, visualized</p>
             </div>
-            <div className="flex items-center gap-2 md:flex-col md:items-end">
+          </div>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <div className="hidden items-center gap-5 md:flex">
+              <Meta value="6" label="visualizers" />
+              <Meta value="12+" label="algorithms" />
+            </div>
+            <div className="flex items-center gap-2">
               <a
                 href="https://github.com/lorenzodarioben-lgtm/cs-visualizer"
                 target="_blank"
                 rel="noreferrer noopener"
-                className="focus-ring inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white/70 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-slate-900 dark:border-white/10 dark:bg-slate-800/60 dark:text-slate-200 dark:hover:bg-slate-700/60 dark:hover:text-white"
+                className="focus-ring inline-flex h-10 items-center gap-2 rounded-lg border border-slate-300/80 bg-white px-3.5 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-400 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800/70 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800"
               >
                 <GithubIcon />
-                <span>View source</span>
+                <span className="hidden sm:inline">Source</span>
               </a>
               <ThemeToggle theme={theme} onToggle={onToggleTheme} />
             </div>
           </div>
         </header>
 
-        <div className="grid gap-5 lg:grid-cols-[18rem_1fr]">
-          <nav className="panel h-fit p-3 lg:sticky lg:top-5" aria-labelledby="visualizer-nav-heading">
-            <p id="visualizer-nav-heading" className="mb-3 px-3 text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
+        <div className="grid gap-4 lg:grid-cols-[16.5rem_1fr]">
+          <nav className="panel h-fit p-2.5 lg:sticky lg:top-4" aria-labelledby="visualizer-nav-heading">
+            <p id="visualizer-nav-heading" className="control-label mb-2.5 px-2.5">
               Visualizers
             </p>
             <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
@@ -114,20 +99,20 @@ export function AppShell({ active, onChange, theme, onToggleTheme, children }: A
 
 function BrandMark() {
   return (
-    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 to-sky-500 text-white shadow-glow">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-        <path d="M4 18V8M9 18v-6M14 18V5M19 18v-9" />
+    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 text-white shadow-glow">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M4 18V9M9 18v-6M14 18V5M19 18v-9" />
       </svg>
     </span>
   );
 }
 
-function StatChip({ value, label }: { value: string; label: string }) {
+function Meta({ value, label }: { value: string; label: string }) {
   return (
-    <span className="inline-flex items-baseline gap-1.5 rounded-full border border-slate-200 bg-white/60 px-3 py-1 text-xs dark:border-white/10 dark:bg-slate-800/50">
-      <span className="font-bold text-indigo-600 dark:text-indigo-400">{value}</span>
-      <span className="font-medium text-slate-500 dark:text-slate-400">{label}</span>
-    </span>
+    <div>
+      <div className="font-display text-lg font-bold leading-none tabular-nums text-slate-900 dark:text-white">{value}</div>
+      <div className="control-label mt-1">{label}</div>
+    </div>
   );
 }
 
