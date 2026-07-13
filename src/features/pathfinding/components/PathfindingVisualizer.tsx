@@ -244,7 +244,7 @@ function GridCellView(props: GridCellViewProps) {
         props.onPaintStart();
       }}
       onMouseEnter={props.onPaintEnter}
-      className={`aspect-square rounded-[3px] transition-colors duration-150 ${cellClass(props)}`}
+      className={`aspect-square cursor-crosshair rounded-[3px] transition-colors duration-150 hover:ring-2 hover:ring-inset hover:ring-indigo-400/70 ${cellClass(props)}`}
     />
   );
 }
