@@ -5,12 +5,27 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        sans: [
+          'ui-sans-serif',
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          'Helvetica',
+          'Arial',
+          'sans-serif',
+        ],
+        display: ['"Space Grotesk Variable"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono Variable"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
       },
       boxShadow: {
-        soft: '0 20px 80px rgba(15, 23, 42, 0.14)',
-        'soft-dark': '0 24px 80px rgba(0, 0, 0, 0.55)',
-        glow: '0 0 0 1px rgba(99, 102, 241, 0.35), 0 12px 40px -12px rgba(99, 102, 241, 0.55)',
+        // Tinted, restrained elevation scale (no pure-black drop shadows).
+        panel: '0 1px 2px 0 rgba(15, 23, 42, 0.04), 0 14px 34px -18px rgba(15, 23, 42, 0.20)',
+        'panel-dark': '0 1px 2px 0 rgba(0, 0, 0, 0.5), 0 22px 50px -26px rgba(0, 0, 0, 0.75)',
+        stage: 'inset 0 1px 2px 0 rgba(15, 23, 42, 0.05)',
+        'stage-dark': 'inset 0 1px 0 0 rgba(148, 163, 184, 0.05)',
+        glow: '0 0 0 1px rgba(99, 102, 241, 0.3), 0 12px 32px -14px rgba(79, 70, 229, 0.55)',
       },
       keyframes: {
         'fade-in': {
@@ -18,19 +33,23 @@ export default {
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'scale-in': {
-          '0%': { opacity: '0', transform: 'scale(0.96)' },
+          '0%': { opacity: '0', transform: 'scale(0.97)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
         },
-        'pop': {
+        pop: {
           '0%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.08)' },
+          '50%': { transform: 'scale(1.12)' },
           '100%': { transform: 'scale(1)' },
+        },
+        shimmer: {
+          '100%': { transform: 'translateX(100%)' },
         },
       },
       animation: {
-        'fade-in': 'fade-in 0.4s ease-out both',
-        'scale-in': 'scale-in 0.25s ease-out both',
-        'pop': 'pop 0.3s ease-out',
+        'fade-in': 'fade-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both',
+        'scale-in': 'scale-in 0.24s cubic-bezier(0.16, 1, 0.3, 1) both',
+        pop: 'pop 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
+        shimmer: 'shimmer 1.6s infinite',
       },
     },
   },
