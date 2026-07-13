@@ -36,9 +36,9 @@ export function SegmentedControl<T extends string>({
               role="radio"
               aria-checked={selected}
               onClick={() => onChange(option.value)}
-              className={`focus-ring flex-1 rounded-lg px-2 py-1.5 text-xs font-bold capitalize transition ${
+              className={`focus-ring flex-1 rounded-lg px-2 py-1.5 text-xs font-bold capitalize transition duration-150 active:scale-[0.97] ${
                 selected
-                  ? 'bg-indigo-600 text-white'
+                  ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700'
               }`}
             >
