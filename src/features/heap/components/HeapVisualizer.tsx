@@ -93,7 +93,7 @@ export function HeapVisualizer() {
               className="canvas-surface flex min-h-[12rem] min-w-0 items-center justify-center overflow-x-auto p-5"
             >
               {displayHeap.length === 0 ? (
-                <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">The heap is empty — insert a value or heapify an array.</p>
+                <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">The heap is empty. Insert a value or heapify an array.</p>
               ) : (
                 <div className="grid min-w-max gap-5">
                   {levels.map((level, levelIndex) => (

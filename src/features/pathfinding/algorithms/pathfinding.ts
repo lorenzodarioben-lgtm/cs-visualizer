@@ -161,7 +161,7 @@ export function generatePathSteps(grid: Grid, algorithm: PathAlgorithm): PathSte
       id: nextStepId('path'),
       action: reachedEnd ? 'done' : 'visit',
       description: reachedEnd
-        ? 'Reached the target cell — reconstructing the shortest path.'
+        ? 'Reached the target cell, reconstructing the shortest path.'
         : `Expand cell (${row}, ${col}) and discover its neighbours.`,
       current: key,
       visited: [...visited],
@@ -177,7 +177,7 @@ export function generatePathSteps(grid: Grid, algorithm: PathAlgorithm): PathSte
     steps.push({
       id: nextStepId('path'),
       action: 'no-path',
-      description: 'The target cell is walled off — no path exists.',
+      description: 'The target cell is walled off, so no path exists.',
       current: null,
       visited: [...visited],
       frontier: [],

@@ -155,7 +155,7 @@ export function PathfindingVisualizer() {
               className="mx-auto grid w-full max-w-3xl gap-[2px]"
               style={{ gridTemplateColumns: `repeat(${grid.cols}, minmax(0, 1fr))` }}
               role="grid"
-              aria-label="Pathfinding grid — click and drag to draw walls"
+              aria-label="Pathfinding grid. Click and drag to draw walls"
             >
               {grid.cells.map((row) =>
                 row.map((cell) => {

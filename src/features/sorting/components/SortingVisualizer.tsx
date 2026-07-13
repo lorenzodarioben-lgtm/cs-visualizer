@@ -61,7 +61,7 @@ export function SortingVisualizer() {
   function applyCustomArray() {
     const values = parseNumberList(customInput).map((value) => clampNumber(Math.round(value), 1, 100));
     if (values.length < 2) {
-      setInputError('Enter at least two numbers (1–100), separated by commas.');
+      setInputError('Enter at least two numbers (1-100), separated by commas.');
       return;
     }
     const trimmed = values.slice(0, 42);
@@ -136,7 +136,7 @@ export function SortingVisualizer() {
               <p id="custom-array-hint" role="alert" className="text-xs font-semibold text-rose-600 dark:text-rose-400">{inputError}</p>
             ) : (
               <p id="custom-array-hint" className="text-xs text-slate-500 dark:text-slate-400">
-                Values are rounded and clamped to 1–100 (up to 42 items).
+                Values are rounded and clamped to 1-100 (up to 42 items).
               </p>
             )}
           </form>
