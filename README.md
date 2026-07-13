@@ -62,7 +62,7 @@ docs/screenshots/graph.png
 
 ## Tech stack
 
-Vite · React 19 · TypeScript (strict) · Tailwind CSS · Vitest · React Testing Library · ESLint · Prettier. No paid APIs or external services.
+Vite · React 19 · TypeScript (strict) · Tailwind CSS · Phosphor Icons · Space Grotesk and JetBrains Mono (self-hosted) · Vitest · React Testing Library · ESLint · Prettier. No paid APIs or external services.
 
 ## Getting started
 

@@ -6,6 +6,19 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Design
+
+- **Interface overhaul.** Reworked the visual language into a deliberate
+  "algorithm workbench": Space Grotesk display headings and JetBrains Mono for
+  code, labels, and numeric data; a slim product masthead in place of the
+  marketing hero; a single Phosphor icon family across the navigation and
+  controls; a refined navigation active state; solid hairline-bordered panels
+  with a tinted elevation scale on a restrained plotting-grid backdrop; recessed
+  technical stages for the visualizations; theme-aware graph rendering; and a
+  soft staggered entrance with a smooth light/dark transition. All motion honors
+  reduced-motion, and both themes meet contrast targets. No visualizer behaviour,
+  playback, keyboard interaction, or persisted setting changed.
+
 ### Changed
 
 - **Sorting swap animation.** Sorting steps now carry an element-identity array,
