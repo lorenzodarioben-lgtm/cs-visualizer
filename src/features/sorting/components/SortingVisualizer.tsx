@@ -73,11 +73,11 @@ export function SortingVisualizer() {
   return (
     <section className="viz-section">
       <div className="viz-column">
-        <div className="panel min-w-0 p-5">
+        <div className="panel min-w-0 p-4">
           <div className="viz-header">
             <div className="min-w-0">
               <p className="control-label">Sorting Visualizer</p>
-              <h2 className="mt-1 text-2xl font-black heading-strong">Compare, swap, partition, merge</h2>
+              <h2 className="mt-1 text-xl font-bold heading-strong">Compare, swap, partition, merge</h2>
             </div>
             <PlaybackControls controller={controller} />
           </div>
@@ -142,8 +142,8 @@ export function SortingVisualizer() {
           </form>
         </div>
 
-        <div className="panel min-w-0 p-5">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="panel min-w-0 p-4">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/70 pb-3 dark:border-slate-800">
             <Legend
               items={[
                 { label: 'Comparing', className: 'bg-amber-400' },
@@ -225,7 +225,7 @@ function Bar({ value, index, count, maxValue, highlights, durationMs, reducedMot
           ? 'bg-amber-400'
           : isActive
             ? 'bg-sky-500'
-            : 'bg-slate-400 dark:bg-slate-500';
+            : 'bg-slate-400 dark:bg-slate-600';
 
   // Each bar owns a full-height column placed by its index. A swap changes only
   // `left`, so the bar slides sideways while keeping its own height.
@@ -249,7 +249,7 @@ function Bar({ value, index, count, maxValue, highlights, durationMs, reducedMot
       }}
     >
       <div
-        className={`w-full rounded-t ${color} ${isPositionalSwap ? 'shadow-lg ring-2 ring-rose-300/70 dark:ring-rose-400/50' : ''}`}
+        className={`w-full rounded-t-[3px] ${color} ${isPositionalSwap ? 'shadow-lg ring-2 ring-rose-300/70 dark:ring-rose-400/50' : ''}`}
         style={{
           height,
           transform: barTransform,
@@ -258,7 +258,7 @@ function Bar({ value, index, count, maxValue, highlights, durationMs, reducedMot
         }}
         title={`Value ${value}`}
       />
-      <span className="pointer-events-none absolute top-1 z-10 hidden rounded bg-slate-900 px-1.5 py-0.5 text-[0.65rem] text-white shadow group-hover:block dark:bg-slate-700">
+      <span className="pointer-events-none absolute top-1 z-10 hidden rounded bg-slate-900 px-1.5 py-0.5 font-mono text-[0.65rem] text-white shadow group-hover:block dark:bg-slate-700">
         {value}
       </span>
     </div>
