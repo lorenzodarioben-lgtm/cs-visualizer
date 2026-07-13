@@ -120,6 +120,7 @@ export function SortingVisualizer() {
                 placeholder="e.g. 42, 8, 15, 4, 23, 16"
                 aria-label="Custom array values"
                 aria-invalid={inputError !== null}
+                aria-describedby="custom-array-hint"
                 onChange={(event) => setCustomInput(event.target.value)}
               />
               <ControlButton type="submit" variant="secondary">Use my array</ControlButton>
@@ -132,9 +133,9 @@ export function SortingVisualizer() {
               </ControlButton>
             </div>
             {inputError ? (
-              <p className="text-xs font-semibold text-rose-600 dark:text-rose-400">{inputError}</p>
+              <p id="custom-array-hint" role="alert" className="text-xs font-semibold text-rose-600 dark:text-rose-400">{inputError}</p>
             ) : (
-              <p className="text-xs text-slate-500 dark:text-slate-400">
+              <p id="custom-array-hint" className="text-xs text-slate-500 dark:text-slate-400">
                 Values are rounded and clamped to 1–100 (up to 42 items).
               </p>
             )}
