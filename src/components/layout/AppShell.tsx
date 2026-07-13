@@ -59,8 +59,10 @@ export function AppShell({ active, onChange, theme, onToggleTheme, children }: A
         </header>
 
         <div className="grid gap-5 lg:grid-cols-[18rem_1fr]">
-          <nav className="panel h-fit p-3 lg:sticky lg:top-5" aria-label="Visualizers">
-            <p className="mb-3 px-3 text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Visualizers</p>
+          <nav className="panel h-fit p-3 lg:sticky lg:top-5" aria-labelledby="visualizer-nav-heading">
+            <p id="visualizer-nav-heading" className="mb-3 px-3 text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
+              Visualizers
+            </p>
             <div className="grid gap-2">
               {VISUALIZERS.map((item) => {
                 const isActive = active === item.key;
