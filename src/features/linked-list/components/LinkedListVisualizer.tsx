@@ -1,3 +1,4 @@
+import { ArrowRight } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { ControlButton } from '../../../components/controls/ControlButton';
 import { SliderControl } from '../../../components/controls/SliderControl';
@@ -36,15 +37,15 @@ export function LinkedListVisualizer() {
   return (
     <section className="viz-section">
       <div className="viz-column">
-        <div className="panel min-w-0 p-5">
+        <div className="panel min-w-0 p-4">
           <div className="viz-header">
             <div className="min-w-0">
               <p className="control-label">Linked List Visualizer</p>
-              <h2 className="mt-1 text-2xl font-black heading-strong">Pointer movement and structural updates</h2>
+              <h2 className="mt-1 text-xl font-bold heading-strong">Pointer movement and structural updates</h2>
             </div>
             <PlaybackControls controller={controller} />
           </div>
-          <div className="mt-5 grid grid-cols-2 gap-4 rounded-2xl surface-muted p-4 sm:grid-cols-[8rem_8rem_minmax(0,1fr)]">
+          <div className="mt-4 grid grid-cols-2 gap-4 rounded-xl border border-slate-200/70 p-4 surface-muted dark:border-slate-800/80 sm:grid-cols-[8rem_8rem_minmax(0,1fr)]">
             <label className="grid gap-2">
               <span className="control-label">Value</span>
               <input className="control-input" type="number" value={value} onChange={(event) => setValue(Number(event.target.value))} />
@@ -67,12 +68,12 @@ export function LinkedListVisualizer() {
           </div>
         </div>
 
-        <div className="panel min-w-0 p-5">
-          <div className="mb-4 flex flex-wrap gap-2 text-xs font-semibold">
+        <div className="panel min-w-0 p-4">
+          <div className="mb-3 flex flex-wrap items-center gap-1.5 border-b border-slate-200/70 pb-3 dark:border-slate-800">
             <span className="pill">Head: {current.list[0] ?? 'null'}</span>
             <span className="pill">Tail: {current.list.at(-1) ?? 'null'}</span>
             <span className="pill">Length: {current.list.length}</span>
-            {current.warning && <span className="rounded-full bg-rose-100 px-3 py-1 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300">{current.warning}</span>}
+            {current.warning && <span className="inline-flex items-center rounded-md border border-rose-200 bg-rose-50 px-2.5 py-1 text-xs font-semibold text-rose-700 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-300">{current.warning}</span>}
           </div>
           <div
             role="img"
@@ -112,13 +113,15 @@ function ListNode({ value, index, step }: { value: number; index: number; step: 
   const target = step.targetIndex === index;
   return (
     <div className="flex items-center">
-      <div className={`relative flex h-20 w-24 shrink-0 flex-col items-center justify-center rounded-2xl border-4 border-white shadow-lg transition-colors duration-300 dark:border-slate-900 ${target ? 'bg-emerald-500 text-white' : active ? 'bg-indigo-600 text-white' : previous ? 'bg-amber-400 text-white' : 'bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-100'}`}>
-        <span className="text-xs font-bold opacity-70">idx {index}</span>
-        <span className="text-2xl font-black">{value}</span>
-        {index === 0 && <span className="absolute -top-7 rounded-full bg-slate-950 px-2 py-1 text-[0.65rem] font-bold text-white">HEAD</span>}
-        {index === step.list.length - 1 && <span className="absolute -bottom-7 rounded-full bg-slate-950 px-2 py-1 text-[0.65rem] font-bold text-white">TAIL</span>}
+      <div className={`relative flex h-20 w-24 shrink-0 flex-col items-center justify-center rounded-xl border-[3px] border-white shadow-md transition-colors duration-300 dark:border-slate-950 ${target ? 'bg-emerald-500 text-white' : active ? 'bg-indigo-600 text-white' : previous ? 'bg-amber-400 text-white' : 'bg-slate-200 text-slate-800 dark:bg-slate-700 dark:text-slate-100'}`}>
+        <span className="font-mono text-[0.65rem] font-medium uppercase tracking-wide opacity-70">idx {index}</span>
+        <span className="font-mono text-2xl font-semibold tabular-nums">{value}</span>
+        {index === 0 && <span className="absolute -top-6 rounded bg-slate-900 px-1.5 py-0.5 font-mono text-[0.6rem] font-bold uppercase tracking-wider text-white dark:bg-slate-700">Head</span>}
+        {index === step.list.length - 1 && <span className="absolute -bottom-6 rounded bg-slate-900 px-1.5 py-0.5 font-mono text-[0.6rem] font-bold uppercase tracking-wider text-white dark:bg-slate-700">Tail</span>}
       </div>
-      {index < step.list.length - 1 && <div className="mx-3 text-3xl font-black text-slate-400 dark:text-slate-500">→</div>}
+      {index < step.list.length - 1 && (
+        <ArrowRight size={22} weight="bold" className="mx-2 shrink-0 text-slate-400 dark:text-slate-600" aria-hidden="true" />
+      )}
     </div>
   );
 }

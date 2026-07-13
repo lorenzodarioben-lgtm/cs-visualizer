@@ -21,11 +21,11 @@ export function StateMachineVisualizer() {
   return (
     <section className="viz-section">
       <div className="viz-column">
-        <div className="panel min-w-0 p-5">
+        <div className="panel min-w-0 p-4">
           <div className="viz-header">
             <div className="min-w-0">
               <p className="control-label">Finite State Machine Demo</p>
-              <h2 className="mt-1 text-2xl font-black heading-strong">Turnstile: Locked ↔ Unlocked</h2>
+              <h2 className="mt-1 text-xl font-bold heading-strong">Turnstile: Locked and Unlocked</h2>
             </div>
             <div className="flex flex-wrap gap-2">
               <ControlButton variant="primary" onClick={() => trigger('coin')}>Input: coin</ControlButton>
@@ -33,7 +33,7 @@ export function StateMachineVisualizer() {
               <ControlButton variant="ghost" onClick={() => setInputs([])}>Reset history</ControlButton>
             </div>
           </div>
-          <div className="mt-5 flex flex-wrap items-end gap-3 rounded-2xl surface-muted p-4">
+          <div className="mt-4 flex flex-wrap items-end gap-3 rounded-xl border border-slate-200/70 p-4 surface-muted dark:border-slate-800/80">
             <SelectControl
               label="Initial state"
               value={initialState}
@@ -46,15 +46,15 @@ export function StateMachineVisualizer() {
                 { value: 'Unlocked', label: 'Unlocked' },
               ]}
             />
-            <span className="rounded-full bg-indigo-100 px-3 py-1 text-sm font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300">
+            <span className="inline-flex items-center gap-1.5 rounded-md border border-indigo-200 bg-indigo-50 px-2.5 py-1.5 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-indigo-700 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-300">
               Current: {current.currentState}
             </span>
           </div>
         </div>
 
-        <div className="panel min-w-0 p-5">
+        <div className="panel min-w-0 p-4">
           <StateDiagram current={current} />
-          <div className="mt-5 grid gap-4 lg:grid-cols-2">
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
             <TransitionTable />
             <HistoryList step={current} />
           </div>
@@ -82,12 +82,12 @@ function StateDiagram({ current }: { current: StateMachineStep }) {
   const locked = current.currentState === 'Locked';
   return (
     <div className="canvas-surface relative flex min-h-[16rem] flex-col flex-wrap items-center justify-center gap-4 p-5 sm:min-h-[20rem] sm:flex-row sm:gap-2">
-      <div className={`flex h-28 w-28 shrink-0 items-center justify-center rounded-full border-4 border-white text-lg font-black shadow-lg transition-colors duration-300 dark:border-slate-900 sm:h-32 sm:w-32 sm:text-xl ${locked ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'}`}>Locked</div>
-      <div className="grid shrink-0 gap-2 px-2 text-center text-sm font-bold text-slate-500 dark:text-slate-400 sm:mx-4">
-        <span>coin →</span>
-        <span>← push</span>
+      <div className={`flex h-28 w-28 shrink-0 items-center justify-center rounded-full border-[3px] border-white font-display text-lg font-semibold shadow-md transition-colors duration-300 dark:border-slate-950 sm:h-32 sm:w-32 sm:text-xl ${locked ? 'bg-indigo-600 text-white' : 'bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-200'}`}>Locked</div>
+      <div className="grid shrink-0 gap-1.5 px-2 text-center font-mono text-xs font-medium text-slate-500 dark:text-slate-400 sm:mx-4">
+        <span>coin &rarr;</span>
+        <span>&larr; push</span>
       </div>
-      <div className={`flex h-28 w-28 shrink-0 items-center justify-center rounded-full border-4 border-white text-lg font-black shadow-lg transition-colors duration-300 dark:border-slate-900 sm:h-32 sm:w-32 sm:text-xl ${!locked ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200'}`}>Unlocked</div>
+      <div className={`flex h-28 w-28 shrink-0 items-center justify-center rounded-full border-[3px] border-white font-display text-lg font-semibold shadow-md transition-colors duration-300 dark:border-slate-950 sm:h-32 sm:w-32 sm:text-xl ${!locked ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-600 dark:bg-slate-700 dark:text-slate-200'}`}>Unlocked</div>
     </div>
   );
 }
@@ -98,9 +98,9 @@ function TransitionTable() {
     <div className="viz-card overflow-hidden">
       <p className="control-label mb-3">Transition table</p>
       <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm">
-          <thead className="text-xs uppercase tracking-wider text-slate-500"><tr><th className="py-2">From</th><th>Input</th><th>To</th></tr></thead>
-          <tbody>{rows.map((row) => <tr className="border-t border-slate-100 dark:border-slate-800" key={`${row.from}-${row.input}`}><td className="py-2 font-semibold">{row.from}</td><td>{row.input}</td><td>{row.to}</td></tr>)}</tbody>
+        <table className="w-full text-left font-mono text-sm">
+          <thead className="control-label"><tr><th className="pb-1 font-medium">From</th><th className="font-medium">Input</th><th className="font-medium">To</th></tr></thead>
+          <tbody className="text-slate-700 dark:text-slate-200">{rows.map((row) => <tr className="border-t border-slate-200/70 dark:border-slate-800" key={`${row.from}-${row.input}`}><td className="py-1.5 font-medium">{row.from}</td><td>{row.input}</td><td>{row.to}</td></tr>)}</tbody>
         </table>
       </div>
     </div>
@@ -111,12 +111,20 @@ function HistoryList({ step }: { step: StateMachineStep }) {
   return (
     <div className="viz-card">
       <p className="control-label mb-3">Transition history</p>
-      <div className="max-h-52 space-y-2 overflow-auto text-sm">
-        {step.history.length === 0 ? <p className="text-slate-500">No inputs yet.</p> : step.history.map((item, index) => (
-          <div className="rounded-xl surface-inset p-2" key={`${item.input}-${index}`}>
-            <span className="font-bold text-slate-900 dark:text-slate-100">{item.from}</span> + <span className="font-bold text-indigo-700 dark:text-indigo-300">{item.input}</span> → <span className="font-bold text-slate-900 dark:text-slate-100">{item.to}</span>
-          </div>
-        ))}
+      <div className="max-h-52 space-y-1.5 overflow-auto">
+        {step.history.length === 0 ? (
+          <p className="text-sm text-slate-500 dark:text-slate-400">No inputs yet. Trigger coin or push.</p>
+        ) : (
+          step.history.map((item, index) => (
+            <div className="rounded-md surface-inset px-2.5 py-1.5 font-mono text-xs" key={`${item.input}-${index}`}>
+              <span className="font-semibold text-slate-900 dark:text-slate-100">{item.from}</span>
+              <span className="text-slate-400"> + </span>
+              <span className="font-semibold text-indigo-700 dark:text-indigo-300">{item.input}</span>
+              <span className="text-slate-400"> &rarr; </span>
+              <span className="font-semibold text-slate-900 dark:text-slate-100">{item.to}</span>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

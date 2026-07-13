@@ -41,11 +41,11 @@ export function HeapVisualizer() {
   return (
     <section className="viz-section">
       <div className="viz-column">
-        <div className="panel min-w-0 p-5">
+        <div className="panel min-w-0 p-4">
           <div className="viz-header">
             <div className="min-w-0">
               <p className="control-label">Heap Operations Visualizer</p>
-              <h2 className="mt-1 text-2xl font-black heading-strong">{order === 'min' ? 'Min' : 'Max'}-heap tree and backing array</h2>
+              <h2 className="mt-1 text-xl font-bold heading-strong">{order === 'min' ? 'Min' : 'Max'}-heap tree and backing array</h2>
             </div>
             <PlaybackControls controller={controller} />
           </div>
@@ -80,10 +80,10 @@ export function HeapVisualizer() {
           </div>
         </div>
 
-        <div className="panel min-w-0 p-5">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="panel min-w-0 p-4">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/70 pb-3 dark:border-slate-800">
             <Legend items={[{ label: 'Compared', className: 'bg-amber-400' }, { label: 'Swapped', className: 'bg-rose-500' }, { label: 'Normal', className: 'bg-indigo-500' }]} />
-            <span className={`rounded-full px-3 py-1 text-xs font-bold ${current.valid ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300' : 'bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300'}`}>{current.valid ? 'Valid heap' : 'Temporarily fixing heap'}</span>
+            <span className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-mono text-[0.7rem] font-semibold uppercase tracking-[0.08em] ${current.valid ? 'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300' : 'border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-500/20 dark:bg-rose-500/10 dark:text-rose-300'}`}>{current.valid ? 'Valid heap' : 'Fixing heap'}</span>
           </div>
 
           <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_16rem]">
@@ -152,15 +152,15 @@ function heapLevels(heap: number[]) {
 function HeapNode({ value, index, step }: { value: number; index: number; step: HeapStep }) {
   const active = step.comparedIndices?.includes(index);
   const swapped = step.swappedIndices?.includes(index);
-  return <div className={`flex h-14 w-14 items-center justify-center rounded-2xl border-4 border-white text-lg font-black text-white shadow-lg transition-colors duration-300 dark:border-slate-900 ${swapped ? 'bg-rose-500' : active ? 'bg-amber-400' : 'bg-indigo-500'}`} title={`Index ${index}`}>{value}</div>;
+  return <div className={`flex h-14 w-14 items-center justify-center rounded-xl border-[3px] border-white font-mono text-lg font-semibold text-white shadow-md transition-colors duration-300 dark:border-slate-950 ${swapped ? 'bg-rose-500' : active ? 'bg-amber-400' : 'bg-indigo-500'}`} title={`Index ${index}`}>{value}</div>;
 }
 
 function HeapArrayCell({ value, index, step }: { value: number; index: number; step: HeapStep }) {
   const active = step.comparedIndices?.includes(index);
   const swapped = step.swappedIndices?.includes(index);
   return (
-    <div className={`rounded-xl p-2 text-center text-sm font-bold transition-colors duration-300 ${swapped ? 'bg-rose-100 text-rose-700' : active ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>
-      <span className="block text-[0.65rem] text-slate-400 dark:text-slate-500">{index}</span>{value}
+    <div className={`rounded-lg p-1.5 text-center font-mono text-sm font-semibold tabular-nums transition-colors duration-300 ${swapped ? 'bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300' : active ? 'bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300' : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200'}`}>
+      <span className="block text-[0.6rem] text-slate-400 dark:text-slate-500">{index}</span>{value}
     </div>
   );
 }
