@@ -30,11 +30,11 @@ export function GraphVisualizer() {
   return (
     <section className="viz-section">
       <div className="viz-column">
-        <div className="panel min-w-0 p-5">
+        <div className="panel min-w-0 p-4">
           <div className="viz-header">
             <div className="min-w-0">
               <p className="control-label">Graph Traversal Visualizer</p>
-              <h2 className="mt-1 text-2xl font-black heading-strong">BFS queue vs DFS stack</h2>
+              <h2 className="mt-1 text-xl font-bold heading-strong">BFS queue vs DFS stack</h2>
             </div>
             <PlaybackControls controller={controller} />
           </div>
@@ -69,10 +69,10 @@ export function GraphVisualizer() {
           </div>
         </div>
 
-        <div className="panel min-w-0 p-5">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="panel min-w-0 p-4">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/70 pb-3 dark:border-slate-800">
             <Legend items={[{ label: 'Current', className: 'bg-indigo-600' }, { label: 'Frontier', className: 'bg-amber-400' }, { label: 'Visited', className: 'bg-sky-400' }, { label: 'Completed', className: 'bg-emerald-500' }]} />
-            <div className="flex min-w-0 flex-wrap gap-2 text-xs font-semibold">
+            <div className="flex min-w-0 flex-wrap gap-1.5">
               <span className="pill max-w-full truncate">Frontier: {current.frontier.join(' → ') || 'empty'}</span>
               <span className="pill max-w-full truncate">Output: {current.output.join(', ') || 'none'}</span>
             </div>
@@ -114,19 +114,54 @@ function GraphCanvas({ graph, step }: { graph: GraphExample; step: TraversalStep
       {graph.edges.map((edge) => {
         const from = nodesById[edge.from];
         const to = nodesById[edge.to];
-        return <line key={`${edge.from}-${edge.to}`} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#94a3b8" strokeWidth="4" strokeLinecap="round" />;
+        return (
+          <line
+            key={`${edge.from}-${edge.to}`}
+            x1={from.x}
+            y1={from.y}
+            x2={to.x}
+            y2={to.y}
+            strokeWidth="3"
+            strokeLinecap="round"
+            className="stroke-slate-300 dark:stroke-slate-700"
+          />
+        );
       })}
       {graph.nodes.map((node) => {
         const isCurrent = step.currentNode === node.id;
         const isFrontier = step.frontier.includes(node.id);
         const isCompleted = step.completed.includes(node.id);
         const isVisited = step.visited.includes(node.id);
-        const fill = isCurrent ? '#4f46e5' : isCompleted ? '#10b981' : isFrontier ? '#f59e0b' : isVisited ? '#38bdf8' : '#e2e8f0';
-        const text = isCurrent || isCompleted || isFrontier ? '#ffffff' : '#0f172a';
+        const isFilled = isCurrent || isCompleted || isFrontier || isVisited;
+        const fillClass = isCurrent
+          ? 'fill-indigo-600'
+          : isCompleted
+            ? 'fill-emerald-500'
+            : isFrontier
+              ? 'fill-amber-400'
+              : isVisited
+                ? 'fill-sky-400'
+                : 'fill-slate-200 dark:fill-slate-700';
+        const textClass = isFilled ? 'fill-white' : 'fill-slate-700 dark:fill-slate-200';
         return (
-          <g key={node.id} className="transition-all">
-            <circle cx={node.x} cy={node.y} r="30" fill={fill} stroke="#ffffff" strokeWidth="5" />
-            <text x={node.x} y={node.y + 6} textAnchor="middle" fontSize="18" fontWeight="800" fill={text}>{node.label}</text>
+          <g key={node.id}>
+            <circle
+              cx={node.x}
+              cy={node.y}
+              r="28"
+              strokeWidth="4"
+              className={`stroke-white transition-colors duration-300 dark:stroke-slate-950 ${fillClass}`}
+            />
+            <text
+              x={node.x}
+              y={node.y + 6}
+              textAnchor="middle"
+              fontSize="18"
+              fontWeight="700"
+              className={`font-display transition-colors duration-300 ${textClass}`}
+            >
+              {node.label}
+            </text>
           </g>
         );
       })}

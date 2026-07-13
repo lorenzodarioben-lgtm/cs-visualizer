@@ -87,11 +87,11 @@ export function PathfindingVisualizer() {
   return (
     <section className="viz-section">
       <div className="viz-column">
-        <div className="panel min-w-0 p-5">
+        <div className="panel min-w-0 p-4">
           <div className="viz-header">
             <div className="min-w-0">
               <p className="control-label">Pathfinding Visualizer</p>
-              <h2 className="mt-1 text-2xl font-black heading-strong">Grid search on walls and weights</h2>
+              <h2 className="mt-1 text-xl font-bold heading-strong">Grid search on walls and weights</h2>
             </div>
             <PlaybackControls controller={controller} />
           </div>
@@ -128,8 +128,8 @@ export function PathfindingVisualizer() {
           </div>
         </div>
 
-        <div className="panel min-w-0 p-5">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className="panel min-w-0 p-4">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/70 pb-3 dark:border-slate-800">
             <Legend
               items={[
                 { label: 'Start', className: 'bg-emerald-500' },
@@ -140,9 +140,9 @@ export function PathfindingVisualizer() {
                 { label: 'Heavy', className: 'bg-orange-300' },
               ]}
             />
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <StatusBadge tone={status.tone} label={status.label} />
-              <span className="pill text-xs font-semibold">Visited: {current.visitedCount}</span>
+              <span className="pill">Visited: {current.visitedCount}</span>
             </div>
           </div>
 
