@@ -17,7 +17,7 @@ Watch real state transitions unfold step by step — with deterministic playback
 
 ## Why this project
 
-Most algorithm demos are static diagrams or opaque animations. CS Visualizer takes a different approach: **every visualizer is driven by a pure, deterministic step generator** that returns a typed timeline of state transitions. The UI is just a renderer for that timeline, so you can scrub, step, replay, and read exactly what the algorithm is doing at each moment — and the same logic is unit-tested in isolation.
+Most algorithm demos are static diagrams or opaque animations. CS Visualizer takes a different approach: **every visualizer is driven by a pure, deterministic step generator** that returns a typed timeline of state transitions. The UI is just a renderer for that timeline, so you can scrub, step, replay, and read exactly what the algorithm is doing at each moment - and the same logic is unit-tested in isolation.
 
 It doubles as a portfolio piece: a clean feature-sliced architecture, a small reusable design system, full light/dark theming, keyboard-driven playback, accessibility considerations, and CI.
 
