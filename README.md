@@ -29,9 +29,9 @@ It doubles as a portfolio piece: a clean feature-sliced architecture, a small re
 
 | Visualizer | What you can explore |
 | --- | --- |
-| **Sorting** | Bubble, Selection, Insertion, Merge, Quick — with comparisons, sorted regions, a custom-array editor, and swaps animated as bars sliding to exchange positions. |
+| **Sorting** | Bubble, Selection, Insertion, Merge, Quick - with comparisons, sorted regions, a custom-array editor, and swaps animated as bars sliding to exchange positions. |
 | **Graph traversal** | BFS vs DFS on predefined graphs, showing the frontier queue/stack, visited/completed nodes, and output order. |
-| **Pathfinding**  | Grid-based **BFS, Dijkstra, and A\*** with a wall/weight brush — draw a maze and compare how each algorithm explores it. |
+| **Pathfinding**  | Grid-based **BFS, Dijkstra, and A\*** with a wall/weight brush - draw a maze and compare how each algorithm explores it. |
 | **Heap** | Min-heap insert / extract-min / peek / heapify as both a tree and a backing array, with bubble-up/down highlighting. |
 | **Linked list** | Singly linked list insert / delete / search / reverse with animated pointer movement. |
 | **State machine** | A turnstile finite automaton with a live transition table and history. |
@@ -39,7 +39,7 @@ It doubles as a portfolio piece: a clean feature-sliced architecture, a small re
 ### Playback & interaction
 
 - Play / pause / replay, step forward & back, and a **draggable timeline scrubber**.
-- **Keyboard shortcuts** — `Space` play/pause, `←/→` (or `H/L`) step, `R` reset.
+- **Keyboard shortcuts** - `Space` play/pause, `←/→` (or `H/L`) step, `R` reset.
 - **Loop** mode and an adjustable **speed** control.
 - Colour-coded **status badges** ("comparing", "swapping", "visited", "path found", …).
 
