@@ -137,4 +137,4 @@ generator for pathfinding, tree rotations, and export-to-GIF.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT - see [LICENSE](LICENSE).
